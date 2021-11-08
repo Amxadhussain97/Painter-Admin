@@ -3,20 +3,22 @@ import { BrowserRouter } from 'react-router-dom';
 import {
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 import './App.css';
 import HeaderComponent from './components/Header/HeaderComponent';
 import Login from './components/Registration/Login';
 import Signup from './components/Registration/Signup';
 import Protected from './components/Protected';
-import { createTheme,ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+
+
+
 
 const theme = createTheme({
   palette: {
-    primary: {
-      main:'#f9f9f9',
-    }
+
   }
 
 })
@@ -29,9 +31,7 @@ function App() {
       <ThemeProvider theme={theme}>
 
         <Switch>
-          <Route path="/">
-            <Protected Cmp={HeaderComponent} />
-          </Route>
+          
           <Route path="/home">
             <Protected Cmp={HeaderComponent} />
           </Route>
@@ -40,6 +40,9 @@ function App() {
           </Route>
           <Route path="/signup">
             <Protected Cmp={Signup} />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/login" />
           </Route>
         </Switch>
       </ThemeProvider>

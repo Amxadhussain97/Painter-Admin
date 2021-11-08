@@ -1,6 +1,6 @@
 
-import React, {useState, useEffect} from 'react'
-import {DataGrid} from '@material-ui/data-grid'
+import React, { useState, useEffect } from 'react'
+import { DataGrid } from '@material-ui/data-grid'
 import MaterialTable from 'material-table'
 import { useStyles } from '../Header/HeaderStyle'
 // Import Material Icons
@@ -20,6 +20,24 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import { useHistory } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
+import { useRouteMatch } from 'react-router';
+import Button from '../controls/Button';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link,
+  Redirect
+
+} from "react-router-dom";
+import Details from './Details/Details';
+
+
+
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -47,22 +65,41 @@ const tableIcons = {
 
 
 const empList = [
-  { avatar:"https://reqres.in/img/faces/1-image.jpg", id: 1, name: "Neeraj", email: 'neeraj@gmail.com', phone: 9876543210, city: "Bangalore" },
-  { avatar:"https://reqres.in/img/faces/1-image.jpg",id: 2, name: "Raj", email: 'raj@gmail.com', phone: 9812345678, city: "Chennai" },
-  { avatar:"https://reqres.in/img/faces/1-image.jpg",id: 3, name: "David", email: 'david342@gmail.com', phone: 7896536289, city: "Jaipur" },
-  { avatar:"https://reqres.in/img/faces/1-image.jpg",id: 4, name: "Vikas", email: 'vikas75@gmail.com', phone: 9087654321, city: "Hyderabad" },
+  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 1, name: "Neeraj", email: 'neeraj@gmail.com', phone: 9876543210, city: "Bangalore" },
+  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 2, name: "Raj", email: 'raj@gmail.com', phone: 9812345678, city: "Chennai" },
+  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 3, name: "David", email: 'david342@gmail.com', phone: 7896536289, city: "Jaipur" },
+  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 4, name: "Vikas", email: 'vikas75@gmail.com', phone: 9087654321, city: "Hyderabad" },
 ]
 
 
-export default function UserComponent(props)  {
-  console.log(props);
+export default function UserComponent(props) {
   const classes = useStyles();
+  let history = useHistory();
+  let { path, url } = useRouteMatch();
+  const [data, setData] = useState()
+  let token = localStorage.getItem('token');
+  token = token.replace(/^\"(.+)\"$/, "$1");
+  useEffect(async () => {
+    let result = await fetch("http://127.0.0.1:8000/api/users", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    })
+    result = await result.json();
+    setData(result.users);
+    //console.log("users ",result.users);
 
-  const [data, setData] = useState(empList)
+  }, [])
+
+
+
   const columns = [
     {
       title: 'Avatar',
-      field: 'avatar',
+      field: 'imagePath',
       render: rowData => (
         <img
           style={{ height: 36, borderRadius: '50%' }}
@@ -73,20 +110,32 @@ export default function UserComponent(props)  {
     { title: "ID", field: "id", editable: false },
     { title: "Name", field: "name" },
     { title: "Email", field: "email" },
+    { title: "Gender", field: 'gender', },
     { title: "Phone Number", field: 'phone', },
-    { title: "City", field: "city",
-    lookup: { Bangalore: 'Bangalore', Chennai: 'Chennai' }, 
-   }
+    { title: "BirthDate", field: 'birthDate', },
+    { title: "Area", field: 'area', },
+    { title: "BankName", field: 'bankName', },
+    { title: "Rocket", field: 'rocket', },
+    { title: "Bkash", field: 'bkash', },
+    { title: "Nogod", field: 'nogod', },
+    { title: "Phone Number", field: 'phone', },
+    {
+      title: "role", field: "role",
+      lookup: { Painter: 'Painter', Dealer: 'Dealer', Admin: 'Admin' },
+    }
   ]
 
 
   return (
     <div >
+
       <MaterialTable
         title="User Data"
         data={data}
         columns={columns}
         icons={tableIcons}
+        //  pagination.labelRowsPerPage=""
+
         editable={{
           onRowAdd: (newRow) => new Promise((resolve, reject) => {
             const updatedRows = [...data, { id: Math.floor(Math.random() * 100), ...newRow }]
@@ -97,20 +146,30 @@ export default function UserComponent(props)  {
           }),
           onRowDelete: selectedRow => new Promise((resolve, reject) => {
             const index = selectedRow.tableData.id;
+            console.log(selectedRow.id);
             const updatedRows = [...data]
             updatedRows.splice(index, 1)
             setTimeout(() => {
-              
+
               setData(updatedRows)
               resolve()
             }, 2000)
+            resolve()
           }),
-          onRowUpdate:(updatedRow,oldRow)=>new Promise((resolve,reject)=>{
-            const index=oldRow.tableData.id;
-            const updatedRows=[...data]
-           
-            updatedRows[index]=updatedRow
-            console.log(updatedRows[index].id);
+          onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
+            const index = oldRow.tableData.id;
+            const updatedRows = [...data]
+            let result = fetch("http://127.0.0.1:8000/api/users/" + updatedRow.id, {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+
+              },
+              body: JSON.stringify(updatedRow)
+            })
+            updatedRows[index] = updatedRow
             setTimeout(() => {
               setData(updatedRows)
               resolve()
@@ -122,8 +181,26 @@ export default function UserComponent(props)  {
           actionsColumnIndex: -1, addRowPosition: "first",
           filtering: true,
         }}
+        actions={[
+          rowData => ({
+            icon: () => <NavLink style={{ textDecoration: 'none', color: 'black', paddingTop: '5px' }} to={`${path}/${rowData.id}`}>< ReadMoreIcon /></NavLink>,
+            tooltip: 'Details',
+            // onClick: (rowData)
+          })
+
+        ]}
+        localization={{
+          pagination: {
+            labelRowsPerPage: 10,
+          }
+        }}
+
       />
+
+
+
     </div>
+
   );
 
 
@@ -137,36 +214,3 @@ export default function UserComponent(props)  {
 
 
 
-
-
-// const columns = [
-//   {field: 'id', headerName: 'ID'},
-//   {field: 'title', headerName: 'Title', width: 300},
-//   {field: 'body', headerName: 'Body', width: 600}
-// ]
-
-// export default function UserComponent()  {
-
-//   const [tableData, setTableData] = useState([])
-
-//  useEffect(() => {
-//    fetch("https://jsonplaceholder.typicode.com/posts")
-//     .then((data) => data.json())
-//     .then((data) => setTableData(data))
-//  })
-
-//   return (
-//     <div style={{height: 700, width: '100%'}}>
-//       <DataGrid 
-//         onRowClick={ (item) => console.log(item.row) }
-//         rows={tableData}
-//         columns={columns}
-//         pageSize={12}
-//         checkboxSelection
-        
-//       />
-//     </div>
-//   )
-// }
-
-// export default DataTable

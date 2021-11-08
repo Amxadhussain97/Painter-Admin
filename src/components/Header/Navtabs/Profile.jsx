@@ -23,7 +23,8 @@ export default function Profile() {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleClose = () => {
+    const handleClose = (event) => {
+   // console.log(event.nativeEvent.target.outerText);
         setAnchorEl(null);
     };
 
@@ -58,7 +59,7 @@ export default function Profile() {
                 {dropDownData.map((item, i) => (
 
                     <MenuItem key={i} component={ListItem} onClick={handleClose}>
-                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemIcon  >{item.icon}</ListItemIcon>
                         <ListItemText>{item.label}</ListItemText>
                     </MenuItem>
                 ))}

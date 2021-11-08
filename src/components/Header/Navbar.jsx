@@ -23,7 +23,7 @@ export default function Navbar({ handleDrawerToggle={handleDrawerToggle}}) {
     }
     return (
         <div >
-            <AppBar position="fixed">
+            <AppBar position="fixed" >
                 <Toolbar style={{background:"#2b475e",fontSize:"1rem"}}>
                     
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1,ml:7 }}>

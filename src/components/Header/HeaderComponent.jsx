@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import { useStyles } from './HeaderStyle';
 import Login from '../Registration/Login';
 import Signup from '../Registration/Signup';
+import Details from '../Body/Details/Details';
+
 import {
     BrowserRouter,
     Switch,
@@ -26,10 +28,10 @@ export default function HeaderComponent() {
 
     const handleDrawerToggle = ({ props }) => {
         setMobileOpen(!mobileOpen);
-        // console.log(mobileOpen);
+        console.log(mobileOpen);
     };
     let { path, url } = useRouteMatch();
-   // console.log(path);
+
 
     return (
         <div>
@@ -43,8 +45,9 @@ export default function HeaderComponent() {
                     <Switch>
                         <Route exact path={path} component={Dashboard} />
                         <Route exact path={`${path}/user`} component={UserComponent} />
+                        <Route exact path={`${path}/user/:id`} component={Details} />
                         <Route exact path={`${path}/logout`} component={Logout} />
-                 
+
                     </Switch>
                 </Box>
             </>

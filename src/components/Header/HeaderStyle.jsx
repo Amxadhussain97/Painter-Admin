@@ -49,12 +49,14 @@ export const useStyles = makeStyles((theme) => ({
 
     //wrapper of main component
     wrapper: {
+        // marginTop:'10px',
         height:"100vh",
         background:"#efefef",
         fontSize:"1rem",
         padding: theme.spacing(10,2, 0, 32),//1 means 8 pixel top,right,bottom,left
         [theme.breakpoints.down("sm")]:{
             padding: theme.spacing(2,2),
+            marginTop:'60px',
         }
     }
 

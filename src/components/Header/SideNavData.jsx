@@ -15,14 +15,14 @@ export default function SideNavData({handleDrawerToggle}) {
     const listItemData = [
         { label: "Dashboard",link:"", icon: <MailIcon /> },
         { label: "Users",link:"/user",icon: <MailIcon /> },
-        { label: "Logout",link:"/logout", icon: <MailIcon /> },
+      
     ]
 
     return (
         <List>
             {listItemData.map((item, i) => (
                
-               <Button size='small' className={classes.navButton} onClick={handleDrawerToggle}>
+               <Button key={i}  size='small' className={classes.navButton} onClick={handleDrawerToggle}>
                     <ListItem
                     exact
                     component={NavLink}
@@ -30,7 +30,7 @@ export default function SideNavData({handleDrawerToggle}) {
                     className={classes.navlinks}
                     activeClassName={classes.activeclasslinks}
                     key={i}>
-                        <ListItemIcon>
+                        <ListItemIcon >
                             {item.icon}
                         </ListItemIcon>
 

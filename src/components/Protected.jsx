@@ -7,7 +7,7 @@ export default function Protected(props) {
     let Cmp = props.Cmp;
     let history = useHistory();
     useEffect(()=>{
-        if(localStorage.getItem('user-info'))
+        if(!localStorage.getItem('user-info'))
         {
             history.push("/login");
         }
