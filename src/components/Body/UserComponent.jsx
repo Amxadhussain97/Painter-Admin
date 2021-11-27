@@ -25,6 +25,8 @@ import { useHistory } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 import { useRouteMatch } from 'react-router';
 import Button from '../controls/Button';
+import { Typography, TextField } from '@material-ui/core';
+
 import {
   BrowserRouter,
   Switch,
@@ -64,19 +66,20 @@ const tableIcons = {
 
 
 
-const empList = [
-  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 1, name: "Neeraj", email: 'neeraj@gmail.com', phone: 9876543210, city: "Bangalore" },
-  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 2, name: "Raj", email: 'raj@gmail.com', phone: 9812345678, city: "Chennai" },
-  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 3, name: "David", email: 'david342@gmail.com', phone: 7896536289, city: "Jaipur" },
-  { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 4, name: "Vikas", email: 'vikas75@gmail.com', phone: 9087654321, city: "Hyderabad" },
-]
+// const empList = [
+//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 1, name: "Neeraj", email: 'neeraj@gmail.com', phone: 9876543210, city: "Bangalore" },
+//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 2, name: "Raj", email: 'raj@gmail.com', phone: 9812345678, city: "Chennai" },
+//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 3, name: "David", email: 'david342@gmail.com', phone: 7896536289, city: "Jaipur" },
+//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 4, name: "Vikas", email: 'vikas75@gmail.com', phone: 9087654321, city: "Hyderabad" },
+// ]
 
 
 export default function UserComponent(props) {
   const classes = useStyles();
   let history = useHistory();
   let { path, url } = useRouteMatch();
-  const [data, setData] = useState()
+  const [data, setData] = useState();
+  const [reload, setReload] = useState(true);
   let token = localStorage.getItem('token');
   token = token.replace(/^\"(.+)\"$/, "$1");
   useEffect(async () => {
@@ -90,9 +93,17 @@ export default function UserComponent(props) {
     })
     result = await result.json();
     setData(result.users);
-    //console.log("users ",result.users);
+    //console.log("users ",result.usreers);
 
-  }, [])
+  }, [reload])
+
+  const TitleImg = (rowData) => {
+    return (
+      <div>
+        <input type="file" />
+      </div>
+    )
+  };
 
 
 
@@ -100,25 +111,35 @@ export default function UserComponent(props) {
     {
       title: 'Avatar',
       field: 'imagePath',
-      render: rowData => (
-        <img
-          style={{ height: 36, borderRadius: '50%' }}
-          src={rowData.avatar}
+      editComponent: (props) => (
+        <input
+          // accept="image/*"
+          style={{ margin: '10px' }}
+          id="imagePath"
+          name="imagePath"
+          type="file"
+          onChange={(e) => props.onChange(e.target.files[0])}
+
         />
+
       ),
+
+      render: rowData => <img src={`http://127.0.0.1:8000/${rowData.imagePath}`} alt="" border="3" height="100" width="100" />
     },
+
+
+
     { title: "ID", field: "id", editable: false },
     { title: "Name", field: "name" },
     { title: "Email", field: "email" },
     { title: "Gender", field: 'gender', },
-    { title: "Phone Number", field: 'phone', },
+    { title: "Phone Number", field: 'phonenumber', },
     { title: "BirthDate", field: 'birthDate', },
     { title: "Area", field: 'area', },
     { title: "BankName", field: 'bankName', },
     { title: "Rocket", field: 'rocket', },
     { title: "Bkash", field: 'bkash', },
     { title: "Nogod", field: 'nogod', },
-    { title: "Phone Number", field: 'phone', },
     {
       title: "role", field: "role",
       lookup: { Painter: 'Painter', Dealer: 'Dealer', Admin: 'Admin' },
@@ -146,7 +167,7 @@ export default function UserComponent(props) {
           }),
           onRowDelete: selectedRow => new Promise((resolve, reject) => {
             const index = selectedRow.tableData.id;
-            console.log(selectedRow.id);
+            // console.log(selectedRow.id);
             const updatedRows = [...data]
             updatedRows.splice(index, 1)
             setTimeout(() => {
@@ -159,19 +180,26 @@ export default function UserComponent(props) {
           onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
             const index = oldRow.tableData.id;
             const updatedRows = [...data]
+
+
+            const formData = new FormData();
+            Object.entries(updatedRow).forEach(([key, value]) => {
+              if (value) formData.append(key, value);
+            });
+
             let result = fetch("http://127.0.0.1:8000/api/users/" + updatedRow.id, {
               method: "POST",
               headers: {
                 "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json",
-                "Accept": "application/json"
 
               },
-              body: JSON.stringify(updatedRow)
+              body: formData
             })
             updatedRows[index] = updatedRow
             setTimeout(() => {
               setData(updatedRows)
+              console.log("data ", data);
+              setReload(!reload);
               resolve()
             }, 2000)
           })
@@ -183,9 +211,8 @@ export default function UserComponent(props) {
         }}
         actions={[
           rowData => ({
-            icon: () => <NavLink style={{ textDecoration: 'none', color: 'black', paddingTop: '5px' }} to={`${path}/${rowData.id}`}>< ReadMoreIcon /></NavLink>,
+            icon: () => <NavLink style={{ textDecoration: 'none', color: 'black', paddingTop: '5px' }} to={`${path}/${rowData.id}/eptools`}>< ReadMoreIcon /></NavLink>,
             tooltip: 'Details',
-            // onClick: (rowData)
           })
 
         ]}

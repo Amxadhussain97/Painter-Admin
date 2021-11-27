@@ -3,13 +3,10 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Avatar, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import image from "./tamim.jpg";
 import { useStyles } from "../HeaderStyle";
 import Box from '@mui/material/Box';
-
 
 
 
@@ -24,27 +21,27 @@ export default function Profile() {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = (event) => {
-   // console.log(event.nativeEvent.target.outerText);
         setAnchorEl(null);
     };
 
     const dropDownData = [
 
-        { label: "settings", icon: <SettingsIcon /> },
         { label: "Logout", icon: <ExitToAppIcon /> }
 
     ]
 
     return (
         <Box>
-            <Button 
-                sx={{ cursor: 'pointer'}}
+            <Button
+                sx={{ cursor: 'pointer' }}
                 id="basic-button"
                 aria-controls="basic-menu"
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
-                startIcon={<Avatar  className={classes.navAvatar} src={image} />}
+                startIcon={<Avatar className={classes.navAvatar}>
+                    <AccountCircleIcon/>
+                </Avatar>}
             />
 
             <Menu
@@ -59,7 +56,7 @@ export default function Profile() {
                 {dropDownData.map((item, i) => (
 
                     <MenuItem key={i} component={ListItem} onClick={handleClose}>
-                        <ListItemIcon  >{item.icon}</ListItemIcon>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText>{item.label}</ListItemText>
                     </MenuItem>
                 ))}

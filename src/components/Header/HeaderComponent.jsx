@@ -6,6 +6,7 @@ import { useStyles } from './HeaderStyle';
 import Login from '../Registration/Login';
 import Signup from '../Registration/Signup';
 import Details from '../Body/Details/Details';
+import Protected from '../Protected';
 
 import {
     BrowserRouter,
@@ -28,9 +29,9 @@ export default function HeaderComponent() {
 
     const handleDrawerToggle = ({ props }) => {
         setMobileOpen(!mobileOpen);
-        console.log(mobileOpen);
+
     };
-    let { path, url } = useRouteMatch();
+    let { path } = useRouteMatch();
 
 
     return (
@@ -43,10 +44,33 @@ export default function HeaderComponent() {
                 <Box className={classes.wrapper}>
 
                     <Switch>
-                        <Route exact path={path} component={Dashboard} />
-                        <Route exact path={`${path}/user`} component={UserComponent} />
-                        <Route exact path={`${path}/user/:id`} component={Details} />
-                        <Route exact path={`${path}/logout`} component={Logout} />
+
+                        <Route exact path={path}>
+                            <Protected Cmp={Dashboard} />
+                        </Route>
+                        <Route exact path={`${path}/user`} >
+                            <Protected Cmp={UserComponent} />
+                        </Route>
+                        <Route  path={`${path}/user/:id`}  >
+                            <Protected Cmp={Details} />
+                        </Route>
+                        <Route exact path={`${path}/logout`}>
+                            <Protected Cmp={Logout} />
+                        </Route>
+
+
+                        {/* <Route exact path={path}>
+                            <Protected Cmp={Dashboard} />
+                        </Route>
+                        <Route exact path={`${path}/user`} >
+                            <Protected Cmp={UserComponent} />
+                        </Route>
+                        <Route exact path={`${path}/user/:id`}  >
+                            <Protected Cmp={Details} />
+                        </Route>
+                        <Route exact path={`${path}/logout`}>
+                            <Protected Cmp={Logout} />
+                        </Route> */}
 
                     </Switch>
                 </Box>
@@ -57,3 +81,7 @@ export default function HeaderComponent() {
         </div>
     )
 }
+{/* <Route exact path={path} component={Dashboard} />
+                        <Route exact path={`${path}/user`} component={UserComponent} />
+                        <Route path={`${path}/user/:id`} component={Details} />
+                        <Route exact path={`${path}/logout`} component={Logout} /> */}

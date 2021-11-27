@@ -24,11 +24,16 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Divider } from '@material-ui/core';
 import { useEffect } from 'react'
-
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import EditIcon from '@mui/icons-material/Edit';
+import Link from '@material-ui/core/Link';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
+import { InsuranceForm } from './InsuranceForm';
+import ConfirmDialog from '../../../controls/ConfirmDialog';
+import PdfView from '../../../controls/PdfView';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -60,11 +65,13 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(3)
     },
     card: {
-        width: '230px',
+        width: '200px',
         height: '200px',
     },
     media: {
-        height: 100
+        height: 80,
+        marginTop: '30px'
+
     },
     cardActions: {
         display: "flex",
@@ -92,19 +99,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 export default function Insurances(props) {
+    let token = localStorage.getItem('token');
+    token = token.replace(/^\"(.+)\"$/, "$1");
+
     let { id } = props
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [openPopup, setOpenPopup] = useState(false);
-    const [userInsurances, setInsurances] = useState([])
+    const [insuranceUrl, setInsuranceUrl] = useState([]);
+    const [userInsurances, setUserInsurances] = useState([])
+    const [reload, setReload] = useState(true)
+    const [records, setRecords] = useState()
+    const [recordForEdit, setRecordForEdit] = useState(null)
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+    const [confirmPdfdialog, setConfirmPdfdialog] = useState({ isOpen: false, title: '', subTitle: '',pdf:'' })
 
-
-
-    let token = localStorage.getItem('token');
-    token = token.replace(/^\"(.+)\"$/, "$1");
 
     useEffect(async () => {
         let result = await fetch(`http://127.0.0.1:8000/api/insurances?user_id=${id}`, {
@@ -116,26 +127,94 @@ export default function Insurances(props) {
             },
         })
         result = await result.json();
-        setInsurances(result.list);
-        console.log(userInsurances);
+        setUserInsurances(result.list);
+
+    }, [reload])
 
 
-    }, [])
+
+
+
+    async function addOrEdit(insurance, resetForm) {
+        const formData = new FormData();
+        formData.append('file_id', insurance.file_id);
+        formData.append('name', insurance.name);
+        if (recordForEdit != null) {
+            await fetch(`http://127.0.0.1:8000/api/insurances/${insurance.id}`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: formData
+            })
+                .then(res => res.json())
+                .catch(error => {
+                    console.log("error", error.message);
+
+                })
+
+
+        }
+
+        else {
+
+            await fetch(`http://127.0.0.1:8000/api/insurances?user_id=${id}`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: formData
+            })
+                .then(res => res.json())
+                .catch(error => {
+                    console.log(error.message);
+
+                })
+        }
+        setReload(!reload);
+        setRecordForEdit(null);
+        setOpenPopup(false);
+
+
+    }
+
+    async function deleteInsurance(id) {
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        })
+        await fetch(`http://127.0.0.1:8000/api/insurances/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        })
+            .then(() => {
+                console.log("delete successfull");
+                setReload(!reload);
+            })
+            .catch(error => {
+                console.log("error", error.message);
+
+            })
+    };
 
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleClose = (event) => {
-        // console.log(event.nativeEvent.target.outerText);
+
+    const handleClose = () => {
         setAnchorEl(null);
     };
+
+
+
     const dropDownData = [
-
         { label: "Download" },
-        { label: "View" }
-
+        { label: "View" },
     ]
+
     return (
         <div >
 
@@ -145,35 +224,16 @@ export default function Insurances(props) {
                     variant="outlined"
                     startIcon={<AddIcon />}
                     className={classes.newButton}
-                    onClick={() => { setOpenPopup(true); }}
-                // onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                    onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
                 />
             </Toolbar>
 
-            <Grid container spacing={0} >
-              
-            {
-                    userInsurances && userInsurances.map(insurances =>
-                        <Grid item xs={12} sm={6} md={3}>
+            <Grid container spacing={2} >
+                {
+                    userInsurances && userInsurances.map((insurances, i) =>
+                        <Grid key={i} item xs={12} sm={2} md={2}>
                             <Card className={classes.card} >
                                 <CardActionArea>
-                                    <Menu
-                                        id="basic-menu"
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
-                                        MenuListProps={{
-                                            'aria-labelledby': 'basic-button',
-                                        }}
-                                    >
-                                        {dropDownData.map((item, i) => (
-
-                                            <MenuItem key={i} component={ListItem} onClick={handleClose}>
-                                                <ListItemText>{item.label}</ListItemText>
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-
 
                                     <CardMedia
                                         className={classes.media}
@@ -184,18 +244,54 @@ export default function Insurances(props) {
                                     <CardContent>
                                         <Divider />
                                     </CardContent>
-                                    <CardHeader
-                                        avatar={
-                                            <PictureAsPdfIcon />
-                                        }
-                                        action={
-                                            <IconButton onClick={handleClick} aria-label="settings">
-                                                <MoreVertIcon />
-                                            </IconButton>
-                                        }
-                                        subheader={insurances.name+"pdf"}
+                                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <CardHeader
+                                            avatar={
+                                                <PictureAsPdfIcon />
+                                            }
 
-                                    />
+                                            subheader={insurances.name}
+
+                                        />
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', marginTop: '20px', marginRight: '10px' }}>
+
+
+                                            <EditIcon
+                                                onClick={() => { setOpenPopup(true); setRecordForEdit(insurances); }}
+                                                sx={{ fontSize: '23px', color: '#706a69' }} />
+
+                                            <CloudDownloadIcon
+                                                onClick={() => {
+                                                    setConfirmPdfdialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure to delete this record?',
+                                                        subTitle: "You can't undo this operation",
+                                                        pdf:`http://127.0.0.1:8000/${insurances.file_id}`,
+                                                        // onConfirm: () => { deleteInsurance(insurances.id); }
+                                                    })
+                                                }}
+                                                // onClick={() => window.location.replace(`http://127.0.0.1:8000/${insurances.file_id}`)}
+                                                sx={{ fontSize: '23px', marginLeft: '5px', color: '#706a69' }}
+                                            >
+
+
+                                            </CloudDownloadIcon>
+                                            <DeleteIcon
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure to delete this record?',
+                                                        subTitle: "You can't undo this operation",
+                                                        onConfirm: () => { deleteInsurance(insurances.id); }
+                                                    })
+                                                }}
+                                                sx={{ fontSize: '23px', marginLeft: '5px', color: 'red' }} />
+
+
+
+                                        </Box>
+                                    </Box>
+
 
                                 </CardActionArea>
                             </Card>
@@ -205,22 +301,25 @@ export default function Insurances(props) {
 
 
 
-
-
-
-
-
-
-                {/* <Box my={4} className={classes.paginationContainer}>
-                    <Pagination count={10} />
-                </Box> */}
                 <Popup
-                    title="popup"
+                    title="Insert Details"
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
+                    <InsuranceForm
+                        reload={reload}
+                        recordForEdit={recordForEdit}
+                        addOrEdit={addOrEdit} />
 
                 </Popup>
+                <ConfirmDialog
+                    confirmDialog={confirmDialog}
+                    setConfirmDialog={setConfirmDialog}
+                />
+                <PdfView
+                    confirmPdfdialog={confirmPdfdialog}
+                    setConfirmPdfdialog={setConfirmPdfdialog}
+                />
 
             </Grid>
 
@@ -229,3 +328,6 @@ export default function Insurances(props) {
         </div>
     )
 }
+
+
+

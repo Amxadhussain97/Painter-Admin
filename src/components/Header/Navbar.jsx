@@ -18,7 +18,7 @@ export default function Navbar({ handleDrawerToggle={handleDrawerToggle}}) {
     function logOut()
     {
         localStorage.clear();
-        history.push('./login');
+        history.push('/login');
 
     }
     return (
@@ -29,9 +29,9 @@ export default function Navbar({ handleDrawerToggle={handleDrawerToggle}}) {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1,ml:7 }}>
                         ADMIN
                     </Typography>
-                
-                    <Hidden mdDown>  
                     <Button onClick={logOut} color="inherit" sx={{ mr: 4 }} >Logout</Button>
+                    <Hidden mdDown>  
+                    
                     <Profile/>
                     </Hidden>
                     <Hidden mdUp>  

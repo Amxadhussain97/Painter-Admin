@@ -32,11 +32,10 @@ import { GolfCourseSharp } from '@material-ui/icons';
 import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
 import { CertificateForm } from './CertificateForm';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-
-
-let token = localStorage.getItem('token');
-token = token.replace(/^\"(.+)\"$/, "$1");
-
+import EditIcon from '@mui/icons-material/Edit';
+import Link from '@material-ui/core/Link';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmDialog from '../../../controls/ConfirmDialog';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -67,11 +66,13 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(3)
     },
     card: {
-        width: '230px',
+        width: '200px',
         height: '200px',
     },
     media: {
-        height: 100
+        height: 80,
+        marginTop:'30px'
+
     },
     cardActions: {
         display: "flex",
@@ -100,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Certificates(props) {
+    let token = localStorage.getItem('token');
+    token = token.replace(/^\"(.+)\"$/, "$1");
+
     let { id } = props
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -110,6 +114,8 @@ export default function Certificates(props) {
     const [reload, setReload] = useState(true)
     const [records, setRecords] = useState()
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+
 
 
     useEffect(async () => {
@@ -124,7 +130,7 @@ export default function Certificates(props) {
         result = await result.json();
         setUserCertificates(result.list);
 
-    }, [])
+    }, [reload])
 
 
 
@@ -132,13 +138,10 @@ export default function Certificates(props) {
 
     async function addOrEdit(certificate, resetForm) {
         const formData = new FormData();
-        formData.append('file_id', certificate.image_id);
+        formData.append('file_id', certificate.file_id);
         formData.append('name', certificate.name);
-        formData.append('model', certificate.model);
-        formData.append('amount', certificate.amount);
         if (recordForEdit != null) {
-
-            await fetch(`http://127.0.0.1:8000/api/eptools/${certificate.id}`, {
+            await fetch(`http://127.0.0.1:8000/api/certificates/${certificate.id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -156,7 +159,7 @@ export default function Certificates(props) {
 
         else {
 
-            await fetch(`http://127.0.0.1:8000/api/eptools?user_id=${id}`, {
+            await fetch(`http://127.0.0.1:8000/api/certificates?user_id=${id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -176,7 +179,26 @@ export default function Certificates(props) {
 
     }
 
+    async function deleteCertificate(id) {
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+          })
+        await fetch(`http://127.0.0.1:8000/api/certificates/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        })
+            .then(() => {
+                console.log("delete successfull");
+                setReload(!reload);
+            })
+            .catch(error => {
+                console.log("error", error.message);
 
+            })
+    };
 
 
     const handleClick = (event) => {
@@ -207,13 +229,13 @@ export default function Certificates(props) {
                 />
             </Toolbar>
 
-            <Grid container spacing={0} >
+            <Grid container spacing={2} >
                 {
                     userCertificates && userCertificates.map((certificates, i) =>
-                        <Grid key={i} item xs={12} sm={6} md={3}>
+                        <Grid key={i} item xs={6} sm={6} md={2}>
                             <Card className={classes.card} >
                                 <CardActionArea>
-
+                                
                                     <CardMedia
                                         className={classes.media}
                                         image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKU8AKvr73t742BUC9sRZsSffv56L7SLB3RQ&usqp=CAU"
@@ -223,19 +245,45 @@ export default function Certificates(props) {
                                     <CardContent>
                                         <Divider />
                                     </CardContent>
-                                    <Box sx={{display:'flex',flexDirection:'column'}}>
-                                      
-                                            <CardHeader
-                                                avatar={
-                                                    <PictureAsPdfIcon />
-                                                }
+                                    <Box sx={{ display: 'flex', flexDirection: 'row',justifyContent:'space-between'}}>
+                                    <CardHeader
+                                            avatar={
+                                                <PictureAsPdfIcon />
+                                            }
 
-                                                subheader={certificates.name}
+                                            subheader={certificates.name}
 
-                                            />
+                                        />
+                                    <Box sx={{ display: 'flex', flexDirection: 'row',justifyContent:'end',marginTop:'20px',marginRight:'10px'}}>
 
-                                            <CloudDownloadIcon />
+                                       
+                                        <EditIcon 
+                                        onClick={() => { setOpenPopup(true); setRecordForEdit(certificates); }}
+                                        sx={{  fontSize: '20px',color:'#706a69',marginTop:'2px'}} />
+                        
+                                        <CloudDownloadIcon
+                                          
+                                           onClick={() => window.location.replace(`http://127.0.0.1:8000/${certificates.file_id}`)}
+                                            sx={{ fontSize: '20px',marginLeft:'5px',color:'#706a69',marginTop:'2px'}}
+                                        >
 
+
+                                        </CloudDownloadIcon>
+                                        <DeleteIcon
+                                          onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure to delete this record?',
+                                                        subTitle: "You can't undo this operation",
+                                                        onConfirm: () => { deleteCertificate(certificates.id);  }
+                                                    })
+                                                }}
+
+                                        sx={{  fontSize: '23px',marginLeft:'5px',color:'red' }}/>
+                        
+
+
+                                    </Box>
                                     </Box>
 
 
@@ -258,6 +306,10 @@ export default function Certificates(props) {
                         addOrEdit={addOrEdit} />
 
                 </Popup>
+                <ConfirmDialog
+                    confirmDialog={confirmDialog}
+                    setConfirmDialog={setConfirmDialog}
+                />
 
             </Grid>
 

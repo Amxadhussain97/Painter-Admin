@@ -4,9 +4,10 @@ import { Redirect } from 'react-router';
 
 export default function Logout() {
     let history = useHistory();
-    //history.push("login");
-    localStorage.removeItem('user-info');
-    <Redirect to="/login"/>
+    localStorage.removeItem('token');
+    // history.push('login');
+    history.push("/login");
+
     return (
         <div>
             <h1>Logout</h1>

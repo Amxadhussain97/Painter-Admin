@@ -11,11 +11,7 @@ import { UseForm } from './UseForm';
 
 const Login = () => {
     let history = useHistory();
-    useEffect(() => {
-        if (localStorage.getItem('user-info')) {
-            history.push("./home");
-        }
-    }, []);
+
 
     const initialFValues = {
         email: '',
@@ -68,11 +64,18 @@ const Login = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    localStorage.setItem("token", JSON.stringify(data.token));
-                    history.push("/home");
+                    if (data.message == 'success') {
+                        localStorage.setItem("token", JSON.stringify(data.token));
+                        history.push("/home/user");
+                    }
+                    else {
+                        setFetcherror(data.message);
+                        const timer = setTimeout(() => {
+                            setFetcherror();
+                        }, 2300);
+                    }
                 })
                 .catch(error => {
-                    console.log(error.message);
                     setFetcherror(error.message);
                     const timer = setTimeout(() => {
                         setFetcherror();

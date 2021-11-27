@@ -12,7 +12,7 @@ import Login from './components/Registration/Login';
 import Signup from './components/Registration/Signup';
 import Protected from './components/Protected';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-
+import NotFound from './components/NotFound';
 
 
 
@@ -36,14 +36,15 @@ function App() {
             <Protected Cmp={HeaderComponent} />
           </Route>
           <Route path="/login">
-            <Protected Cmp={Login} />
+            <Login/>
           </Route>
           <Route path="/signup">
-            <Protected Cmp={Signup} />
+            <Signup/>
           </Route>
           <Route exact path="/">
             <Redirect to="/login" />
           </Route>
+          <Route component={NotFound} />
         </Switch>
       </ThemeProvider>
     </BrowserRouter>
