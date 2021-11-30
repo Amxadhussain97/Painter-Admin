@@ -21,7 +21,7 @@ const theme = createTheme({
 
   },
   typography: {
-    fontSize: [16, "!important"],
+ //   fontSize: [25, "!important"],
   },
 
 })

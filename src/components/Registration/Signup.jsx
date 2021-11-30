@@ -88,10 +88,19 @@ const Signup = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    localStorage.setItem("token", JSON.stringify(data.token));
-                    history.push("/home/user");
+                    if (data.message!="success") {
+                        setFetcherror(data.message);
+                        const timer = setTimeout(() => {
+                            setFetcherror();
+                        }, 2300);
+                    }
+                    else {
+                        localStorage.setItem("token", JSON.stringify(data.token));
+                        history.push("/home/user");
+                    }
                 })
                 .catch(error => {
+
                     setFetcherror(error.message);
                     const timer = setTimeout(() => {
                         setFetcherror();
@@ -149,6 +158,9 @@ const Signup = () => {
                         {...(errors.confirmpassword && { error: true, helperText: errors.confirmpassword })}
                     />
                     <Button onClick={signUp} type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Sign up</Button>
+                    <Typography style={{ color: 'red', margin: "5px" }}>
+                        {fetcherror}
+                    </Typography>
                     <Typography > Already have an account?
                         <NavLink to="/login" style={{ marginLeft: '5px' }} >
                             Sign in

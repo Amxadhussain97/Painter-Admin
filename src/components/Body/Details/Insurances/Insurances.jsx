@@ -88,7 +88,8 @@ const useStyles = makeStyles((theme) => ({
     },
     newButton: {
         position: 'absolute',
-        right: '12px'
+        right: '12px',
+        top:"-24px"
 
 
     },
@@ -216,7 +217,7 @@ export default function Insurances(props) {
     ]
 
     return (
-        <div >
+        <>
 
             <Toolbar>
                 <Controls.Button
@@ -324,7 +325,7 @@ export default function Insurances(props) {
 
 
 
-        </div>
+        </>
     )
 }
 
