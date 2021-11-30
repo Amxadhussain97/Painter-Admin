@@ -114,11 +114,11 @@ export default function Insurances(props) {
     const [records, setRecords] = useState()
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
-    const [confirmPdfdialog, setConfirmPdfdialog] = useState({ isOpen: false, title: '', subTitle: '',pdf:'' })
+    const [confirmPdfdialog, setConfirmPdfdialog] = useState({ isOpen: false, title: '', subTitle: '', pdf: '' })
 
 
     useEffect(async () => {
-        let result = await fetch(`http://127.0.0.1:8000/api/insurances?user_id=${id}`, {
+        let result = await fetch(`http://amaderlab.xyz/api/insurances?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -140,7 +140,7 @@ export default function Insurances(props) {
         formData.append('file_id', insurance.file_id);
         formData.append('name', insurance.name);
         if (recordForEdit != null) {
-            await fetch(`http://127.0.0.1:8000/api/insurances/${insurance.id}`, {
+            await fetch(`http://amaderlab.xyz/api/insurances/${insurance.id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -158,7 +158,7 @@ export default function Insurances(props) {
 
         else {
 
-            await fetch(`http://127.0.0.1:8000/api/insurances?user_id=${id}`, {
+            await fetch(`http://amaderlab.xyz/api/insurances?user_id=${id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -183,7 +183,7 @@ export default function Insurances(props) {
             ...confirmDialog,
             isOpen: false
         })
-        await fetch(`http://127.0.0.1:8000/api/insurances/${id}`, {
+        await fetch(`http://amaderlab.xyz/api/insurances/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -266,12 +266,11 @@ export default function Insurances(props) {
                                                         isOpen: true,
                                                         title: 'Are you sure to delete this record?',
                                                         subTitle: "You can't undo this operation",
-                                                        pdf:`http://127.0.0.1:8000/${insurances.file_id}`,
+                                                        pdf: `http://amaderlab.xyz/${insurances.file_id}`,
                                                         // onConfirm: () => { deleteInsurance(insurances.id); }
                                                     })
                                                 }}
-                                                // onClick={() => window.location.replace(`http://127.0.0.1:8000/${insurances.file_id}`)}
-                                                sx={{ fontSize: '23px', marginLeft: '5px', color: '#706a69' }}
+                                              sx={{ fontSize: '23px', marginLeft: '5px', color: '#706a69' }}
                                             >
 
 

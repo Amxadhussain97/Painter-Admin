@@ -102,7 +102,7 @@ export default function Photos() {
   let { path, url } = useRouteMatch();
 
   useEffect(async () => {
-    let result = await fetch(`http://127.0.0.1:8000/api/galleries/${galleryid}/photos`, {
+    let result = await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -128,7 +128,7 @@ export default function Photos() {
 
     formData.append('image_id', photo.image_id);
     if (recordForEdit != null) {
-      await fetch(`http://127.0.0.1:8000/api/galleries/${galleryid}/photos/${photo.id}`, {
+      await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos/${photo.id}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -146,7 +146,7 @@ export default function Photos() {
 
     else {
 
-      await fetch(`http://127.0.0.1:8000/api/galleries/${galleryid}/photos`, {
+      await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -173,7 +173,7 @@ export default function Photos() {
       ...confirmDialog,
       isOpen: false
     })
-    await fetch(`http://127.0.0.1:8000/api/galleries/${galleryid}/photos/${photo_id}`, {
+    await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos/${photo_id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -221,8 +221,8 @@ export default function Photos() {
           photos && photos.map((photo, i) => (
             <ImageListItem key={i}>
               <img
-                src={`http://127.0.0.1:8000/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
-                srcSet={`http://127.0.0.1:8000/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
+                src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
+                srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
                 alt={`title`}
                 loading="lazy"
               />

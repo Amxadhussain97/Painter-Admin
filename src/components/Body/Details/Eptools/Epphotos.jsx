@@ -125,7 +125,7 @@ export default function Epphotos() {
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
     useEffect(async () => {
-        let result = await fetch(`http://127.0.0.1:8000/api/eptools/${eptoolid}/photos`, {
+        let result = await fetch(`http://amaderlab.xyz/api/eptools/${eptoolid}/photos`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -152,7 +152,7 @@ export default function Epphotos() {
 
         if (recordForEdit != null) {
             formData.append('image_id', photo.image_id);
-            await fetch(`http://127.0.0.1:8000/api/eptools/${eptoolid}/photos/${photo.id}`, {
+            await fetch(`http://amaderlab.xyz/api/eptools/${eptoolid}/photos/${photo.id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -171,7 +171,7 @@ export default function Epphotos() {
         else {
             formData.append('image_id[]', photo.image_id);
 
-            await fetch(`http://127.0.0.1:8000/api/eptools/${eptoolid}/photos`, {
+            await fetch(`http://amaderlab.xyz/api/eptools/${eptoolid}/photos`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -198,7 +198,7 @@ export default function Epphotos() {
             ...confirmDialog,
             isOpen: false
         })
-        await fetch(`http://127.0.0.1:8000/api/eptools/${eptoolid}/photos/${photo_id}`, {
+        await fetch(`http://amaderlab.xyz/api/eptools/${eptoolid}/photos/${photo_id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -246,8 +246,8 @@ export default function Epphotos() {
                     photos && photos.map((photo, i) => (
                         <ImageListItem key={i}>
                             <img
-                                src={`http://127.0.0.1:8000/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
-                                srcSet={`http://127.0.0.1:8000/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
+                                src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
+                                srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
                                 alt={`title`}
                                 loading="lazy"
                             />

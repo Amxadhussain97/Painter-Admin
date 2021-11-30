@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         height: 80,
-        marginTop:'30px'
+        marginTop: '30px'
 
     },
     cardActions: {
@@ -119,7 +119,7 @@ export default function Certificates(props) {
 
 
     useEffect(async () => {
-        let result = await fetch(`http://127.0.0.1:8000/api/certificates?user_id=${id}`, {
+        let result = await fetch(`http://amaderlab.xyz/api/certificates?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -141,7 +141,7 @@ export default function Certificates(props) {
         formData.append('file_id', certificate.file_id);
         formData.append('name', certificate.name);
         if (recordForEdit != null) {
-            await fetch(`http://127.0.0.1:8000/api/certificates/${certificate.id}`, {
+            await fetch(`http://amaderlab.xyz/api/certificates/${certificate.id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -159,7 +159,7 @@ export default function Certificates(props) {
 
         else {
 
-            await fetch(`http://127.0.0.1:8000/api/certificates?user_id=${id}`, {
+            await fetch(`http://amaderlab.xyz/api/certificates?user_id=${id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -183,8 +183,8 @@ export default function Certificates(props) {
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
-          })
-        await fetch(`http://127.0.0.1:8000/api/certificates/${id}`, {
+        })
+        await fetch(`http://amaderlab.xyz/api/certificates/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -235,7 +235,7 @@ export default function Certificates(props) {
                         <Grid key={i} item xs={6} sm={6} md={2}>
                             <Card className={classes.card} >
                                 <CardActionArea>
-                                
+
                                     <CardMedia
                                         className={classes.media}
                                         image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKU8AKvr73t742BUC9sRZsSffv56L7SLB3RQ&usqp=CAU"
@@ -245,8 +245,8 @@ export default function Certificates(props) {
                                     <CardContent>
                                         <Divider />
                                     </CardContent>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row',justifyContent:'space-between'}}>
-                                    <CardHeader
+                                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <CardHeader
                                             avatar={
                                                 <PictureAsPdfIcon />
                                             }
@@ -254,36 +254,36 @@ export default function Certificates(props) {
                                             subheader={certificates.name}
 
                                         />
-                                    <Box sx={{ display: 'flex', flexDirection: 'row',justifyContent:'end',marginTop:'20px',marginRight:'10px'}}>
-
-                                       
-                                        <EditIcon 
-                                        onClick={() => { setOpenPopup(true); setRecordForEdit(certificates); }}
-                                        sx={{  fontSize: '20px',color:'#706a69',marginTop:'2px'}} />
-                        
-                                        <CloudDownloadIcon
-                                          
-                                           onClick={() => window.location.replace(`http://127.0.0.1:8000/${certificates.file_id}`)}
-                                            sx={{ fontSize: '20px',marginLeft:'5px',color:'#706a69',marginTop:'2px'}}
-                                        >
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', marginTop: '20px', marginRight: '10px' }}>
 
 
-                                        </CloudDownloadIcon>
-                                        <DeleteIcon
-                                          onClick={() => {
+                                            <EditIcon
+                                                onClick={() => { setOpenPopup(true); setRecordForEdit(certificates); }}
+                                                sx={{ fontSize: '20px', color: '#706a69', marginTop: '2px' }} />
+
+                                            <CloudDownloadIcon
+
+                                                onClick={() => window.location.replace(`http://amaderlab.xyz/${certificates.file_id}`)}
+                                                sx={{ fontSize: '20px', marginLeft: '5px', color: '#706a69', marginTop: '2px' }}
+                                            >
+
+
+                                            </CloudDownloadIcon>
+                                            <DeleteIcon
+                                                onClick={() => {
                                                     setConfirmDialog({
                                                         isOpen: true,
                                                         title: 'Are you sure to delete this record?',
                                                         subTitle: "You can't undo this operation",
-                                                        onConfirm: () => { deleteCertificate(certificates.id);  }
+                                                        onConfirm: () => { deleteCertificate(certificates.id); }
                                                     })
                                                 }}
 
-                                        sx={{  fontSize: '23px',marginLeft:'5px',color:'red' }}/>
-                        
+                                                sx={{ fontSize: '23px', marginLeft: '5px', color: 'red' }} />
 
 
-                                    </Box>
+
+                                        </Box>
                                     </Box>
 
 

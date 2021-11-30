@@ -83,7 +83,7 @@ export default function UserComponent(props) {
   let token = localStorage.getItem('token');
   token = token.replace(/^\"(.+)\"$/, "$1");
   useEffect(async () => {
-    let result = await fetch("http://127.0.0.1:8000/api/users", {
+    let result = await fetch("http://amaderlab.xyz/api/users", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -124,7 +124,7 @@ export default function UserComponent(props) {
 
       ),
 
-      render: rowData => <img src={`http://127.0.0.1:8000/${rowData.imagePath}`} alt="" border="3" height="100" width="100" />
+      render: rowData => <img src={`http://amaderlab.xyz/${rowData.imagePath}`} alt="" border="3" height="100" width="100" />
     },
 
 
@@ -165,18 +165,18 @@ export default function UserComponent(props) {
               resolve()
             }, 2000)
           }),
-          onRowDelete: selectedRow => new Promise((resolve, reject) => {
-            const index = selectedRow.tableData.id;
-            // console.log(selectedRow.id);
-            const updatedRows = [...data]
-            updatedRows.splice(index, 1)
-            setTimeout(() => {
+          // onRowDelete: selectedRow => new Promise((resolve, reject) => {
+          //   const index = selectedRow.tableData.id;
+          //   // console.log(selectedRow.id);
+          //   const updatedRows = [...data]
+          //   updatedRows.splice(index, 1)
+          //   setTimeout(() => {
 
-              setData(updatedRows)
-              resolve()
-            }, 2000)
-            resolve()
-          }),
+          //     setData(updatedRows)
+          //     resolve()
+          //   }, 2000)
+          //   resolve()
+          // }),
           onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
             const index = oldRow.tableData.id;
             const updatedRows = [...data]
@@ -187,7 +187,7 @@ export default function UserComponent(props) {
               if (value) formData.append(key, value);
             });
 
-            let result = fetch("http://127.0.0.1:8000/api/users/" + updatedRow.id, {
+            let result = fetch("http://amaderlab.xyz/api/users/" + updatedRow.id, {
               method: "POST",
               headers: {
                 "Authorization": `Bearer ${token}`,

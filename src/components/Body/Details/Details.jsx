@@ -90,7 +90,7 @@ export default function Details() {
     let token = localStorage.getItem('token');
     token = token.replace(/^\"(.+)\"$/, "$1");
     useEffect(async () => {
-        let result = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+        let result = await fetch(`http://amaderlab.xyz/api/users/${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,

@@ -129,7 +129,7 @@ export default function Details() {
 
 
     useEffect(async () => {
-        let result = await fetch(`http://127.0.0.1:8000/api/galleries?user_id=${id}`, {
+        let result = await fetch(`http://amaderlab.xyz/api/galleries?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -150,7 +150,7 @@ export default function Details() {
         const formData = new FormData();
         formData.append('name', gallery.name);
         if (recordForEdit != null) {
-            await fetch(`http://127.0.0.1:8000/api/galleries/${gallery.id}`, {
+            await fetch(`http://amaderlab.xyz/api/galleries/${gallery.id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -168,7 +168,7 @@ export default function Details() {
 
         else {
 
-            await fetch(`http://127.0.0.1:8000/api/galleries?user_id=${id}`, {
+            await fetch(`http://amaderlab.xyz/api/galleries?user_id=${id}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -194,8 +194,8 @@ export default function Details() {
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
-          })
-        await fetch(`http://127.0.0.1:8000/api/galleries/${gallery_id}`, {
+        })
+        await fetch(`http://amaderlab.xyz/api/galleries/${gallery_id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,

@@ -65,7 +65,7 @@ export default function Details() {
 
     useEffect(async () => {
         console.log("ide oilo ", id);
-        let result = await fetch(`http://127.0.0.1:8000/api/eptools?user_id=${id}`, {
+        let result = await fetch(`http://amaderlab.xyz/api/eptools?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -102,7 +102,7 @@ export default function Details() {
                 editable={{
                     onRowAdd: (newRow) => new Promise((resolve, reject) => {
 
-                        let result = fetch(`http://127.0.0.1:8000/api/eptools?user_id=${id}`, {
+                        let result = fetch(`http://amaderlab.xyz/api/eptools?user_id=${id}`, {
                             method: "POST",
                             headers: {
                                 "Authorization": `Bearer ${token}`,
@@ -123,7 +123,7 @@ export default function Details() {
                         // const updatedRows = [...data]
                         // updatedRows.splice(index, 1)
 
-                        let result = fetch(`http://127.0.0.1:8000/api/eptools/${selectedRow.id}`, {
+                        let result = fetch(`http://amaderlab.xyz/api/eptools/${selectedRow.id}`, {
                             method: "DELETE",
                             headers: {
                                 "Authorization": `Bearer ${token}`,
@@ -149,7 +149,7 @@ export default function Details() {
                         });
 
 
-                        let result = fetch(`http://127.0.0.1:8000/api/eptools/${updatedRow.id}`, {
+                        let result = fetch(`http://amaderlab.xyz/api/eptools/${updatedRow.id}`, {
                             method: "POST",
                             headers: {
                                 "Authorization": `Bearer ${token}`,

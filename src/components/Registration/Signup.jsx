@@ -78,7 +78,7 @@ const Signup = () => {
             setFetcherror();
             let item = Object.assign({}, { email: values.email, password: values.password, role: 'Admin' });
 
-            await fetch("http://127.0.0.1:8000/api/register", {
+            await fetch("http://amaderlab.xyz/api/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -89,7 +89,7 @@ const Signup = () => {
                 .then(res => res.json())
                 .then(data => {
                     localStorage.setItem("token", JSON.stringify(data.token));
-                    history.push("/home");
+                    history.push("/home/user");
                 })
                 .catch(error => {
                     setFetcherror(error.message);

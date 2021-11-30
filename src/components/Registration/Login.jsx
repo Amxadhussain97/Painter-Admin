@@ -54,7 +54,7 @@ const Login = () => {
         if (validate()) {
 
             setFetcherror();
-            await fetch("http://127.0.0.1:8000/api/login", {
+            await fetch("http://amaderlab.xyz/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
