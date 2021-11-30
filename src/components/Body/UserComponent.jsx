@@ -119,7 +119,6 @@ export default function UserComponent(props) {
           name="imagePath"
           type="file"
           onChange={(e) => props.onChange(e.target.files[0])}
-
         />
 
       ),

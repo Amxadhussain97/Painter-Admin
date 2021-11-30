@@ -117,7 +117,7 @@ export default function Details() {
     return (
 
         <Grid container spacing={2}>
-            <Grid item xs={4} md={12} sm={12}>
+            <Grid item xs={12} md={12} sm={12}>
                 <Paper>
                     <Card sx={{ maxWidth: 400 }} elevation={0}>
                         <CardHeader
@@ -132,7 +132,12 @@ export default function Details() {
                     </Card>
                     <Box sx={{ width: '100%' }}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                            <Tabs value={value} onChange={handleChange}
+                                variant="scrollable"
+                                scrollButtons
+                                allowScrollButtonsMobile
+                                aria-label="scrollable force tabs example"
+                            >
 
                                 <Tab label="Eptools"   {...a11yProps(0)} to={`${url}/eptools`} component={Link} />
                                 <Tab label="Certificates" {...a11yProps(1)} to={`${url}/Certificates`} component={Link} />

@@ -19,7 +19,10 @@ import NotFound from './components/NotFound';
 const theme = createTheme({
   palette: {
 
-  }
+  },
+  typography: {
+    fontSize: [16, "!important"],
+  },
 
 })
 

@@ -229,10 +229,10 @@ export default function Certificates(props) {
                 />
             </Toolbar>
 
-            <Grid container spacing={2} >
+            <Grid container spacing={8} >
                 {
                     userCertificates && userCertificates.map((certificates, i) =>
-                        <Grid key={i} item xs={6} sm={6} md={2}>
+                        <Grid key={i} item xs={6} sm={4} md={2}>
                             <Card className={classes.card} >
                                 <CardActionArea>
 
@@ -263,7 +263,7 @@ export default function Certificates(props) {
 
                                             <CloudDownloadIcon
 
-                                                onClick={() => window.location.replace(`http://amaderlab.xyz/${certificates.file_id}`)}
+                                                onClick={() => window.location.replace(`http://127.0.0.1:8000/${certificates.file_id}`)}
                                                 sx={{ fontSize: '20px', marginLeft: '5px', color: '#706a69', marginTop: '2px' }}
                                             >
 

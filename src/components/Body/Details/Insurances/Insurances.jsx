@@ -228,10 +228,10 @@ export default function Insurances(props) {
                 />
             </Toolbar>
 
-            <Grid container spacing={2} >
+            <Grid container spacing={8} >
                 {
                     userInsurances && userInsurances.map((insurances, i) =>
-                        <Grid key={i} item xs={12} sm={2} md={2}>
+                        <Grid key={i} item xs={6} sm={4} md={2}>
                             <Card className={classes.card} >
                                 <CardActionArea>
 
@@ -270,7 +270,7 @@ export default function Insurances(props) {
                                                         // onConfirm: () => { deleteInsurance(insurances.id); }
                                                     })
                                                 }}
-                                              sx={{ fontSize: '23px', marginLeft: '5px', color: '#706a69' }}
+                                                sx={{ fontSize: '23px', marginLeft: '5px', color: '#706a69' }}
                                             >
 
 
