@@ -211,7 +211,7 @@ export default function UserComponent(props) {
         actions={[
           rowData => ({
             icon: () => <NavLink style={{ textDecoration: 'none', color: 'black', paddingTop: '5px' }} to={`${path}/${rowData.id}/eptools`}>< ReadMoreIcon /></NavLink>,
-            tooltip: 'Details',
+            tooltip: 'More Details',
           })
 
         ]}

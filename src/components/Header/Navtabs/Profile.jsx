@@ -26,7 +26,7 @@ export default function Profile() {
 
     const dropDownData = [
 
-        { label: "Logout", icon: <ExitToAppIcon /> }
+        // { label: "Logout", icon: <ExitToAppIcon /> }
 
     ]
 
@@ -38,7 +38,7 @@ export default function Profile() {
                 aria-controls="basic-menu"
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
+                // onClick={handleClick}
                 startIcon={<Avatar className={classes.navAvatar}>
                     <AccountCircleIcon/>
                 </Avatar>}
