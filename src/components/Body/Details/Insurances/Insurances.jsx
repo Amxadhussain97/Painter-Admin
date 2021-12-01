@@ -88,8 +88,8 @@ const useStyles = makeStyles((theme) => ({
     },
     newButton: {
         position: 'absolute',
-        right: '12px',
-        top:"-24px"
+        right: '2px',
+        top: "0px"
 
 
     },
@@ -217,90 +217,95 @@ export default function Insurances(props) {
     ]
 
     return (
+
         <>
-
-            <Toolbar>
-                <Controls.Button
-                    text="Add New"
-                    variant="outlined"
-                    startIcon={<AddIcon />}
-                    className={classes.newButton}
-                    onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                />
-            </Toolbar>
-
-            <Grid container spacing={8} >
-                {
-                    userInsurances && userInsurances.map((insurances, i) =>
-                        <Grid key={i} item xs={6} sm={4} md={2}>
-                            <Card className={classes.card} >
-                                <CardActionArea>
-
-                                    <CardMedia
-                                        className={classes.media}
-                                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKU8AKvr73t742BUC9sRZsSffv56L7SLB3RQ&usqp=CAU"
-                                        title={insurances.name}
-                                    />
-
-                                    <CardContent>
-                                        <Divider />
-                                    </CardContent>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <CardHeader
-                                            avatar={
-                                                <PictureAsPdfIcon />
-                                            }
-
-                                            subheader={insurances.name}
-
-                                        />
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', marginTop: '20px', marginRight: '10px' }}>
+            <div>
 
 
-                                            <EditIcon
-                                                onClick={() => { setOpenPopup(true); setRecordForEdit(insurances); }}
-                                                sx={{ fontSize: '23px', color: '#706a69' }} />
-
-                                            <CloudDownloadIcon
-                                                onClick={() => {
-                                                    setConfirmPdfdialog({
-                                                        isOpen: true,
-                                                        title: 'Are you sure to delete this record?',
-                                                        subTitle: "You can't undo this operation",
-                                                        pdf: `http://amaderlab.xyz/${insurances.file_id}`,
-                                                        // onConfirm: () => { deleteInsurance(insurances.id); }
-                                                    })
-                                                }}
-                                                sx={{ fontSize: '23px', marginLeft: '5px', color: '#706a69' }}
-                                            >
-
-
-                                            </CloudDownloadIcon>
-                                            <DeleteIcon
-                                                onClick={() => {
-                                                    setConfirmDialog({
-                                                        isOpen: true,
-                                                        title: 'Are you sure to delete this record?',
-                                                        subTitle: "You can't undo this operation",
-                                                        onConfirm: () => { deleteInsurance(insurances.id); }
-                                                    })
-                                                }}
-                                                sx={{ fontSize: '23px', marginLeft: '5px', color: 'red' }} />
+                <Toolbar>
+                    <Controls.Button
+                        text="Add New"
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        className={classes.newButton}
+                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                    />
+                </Toolbar>
 
 
 
-                                        </Box>
-                                    </Box>
+                <Box sx={{ flexGrow: 1 }}>
+
+                    <Grid container spacing={4}>
+
+                        {
+                            userInsurances && userInsurances.map((insurance, i) =>
+                                <Grid item xs={6} md={2}>
+                                    <Card className={classes.card} >
+                                        <CardActionArea>
+
+                                            <CardMedia
+                                                className={classes.media}
+                                                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKU8AKvr73t742BUC9sRZsSffv56L7SLB3RQ&usqp=CAU"
+                                                title={insurance.name}
+                                            />
+
+                                            <CardContent>
+                                                <Divider />
+                                            </CardContent>
+                                            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                <CardHeader
+                                                    avatar={
+                                                        <PictureAsPdfIcon />
+                                                    }
+
+                                                    subheader={insurance.name}
+
+                                                />
+                                                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', marginTop: '20px', marginRight: '10px' }}>
 
 
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    )
-                }
+                                                    <EditIcon
+                                                        onClick={() => { setOpenPopup(true); setRecordForEdit(insurance); }}
+                                                        sx={{ fontSize: '20px', color: '#706a69', marginTop: '2px' }} />
+
+                                                    <CloudDownloadIcon
+
+                                                        onClick={() => window.location.replace(`http://amaderlab.xyz/${insurance.file_id}`)}
+                                                        sx={{ fontSize: '20px', marginLeft: '5px', color: '#706a69', marginTop: '2px' }}
+                                                    >
+
+
+                                                    </CloudDownloadIcon>
+                                                    <DeleteIcon
+                                                        onClick={() => {
+                                                            setConfirmDialog({
+                                                                isOpen: true,
+                                                                title: 'Are you sure to delete this record?',
+                                                                subTitle: "You can't undo this operation",
+                                                                onConfirm: () => { deleteInsurance(insurance.id); }
+                                                            })
+                                                        }}
+
+                                                        sx={{ fontSize: '23px', marginLeft: '5px', color: 'red' }} />
 
 
 
+                                                </Box>
+                                            </Box>
+
+
+                                        </CardActionArea>
+                                    </Card>
+                                </Grid>
+                            )
+
+                        }
+
+
+                    </Grid>
+
+                </Box>
                 <Popup
                     title="Insert Details"
                     openPopup={openPopup}
@@ -316,13 +321,7 @@ export default function Insurances(props) {
                     confirmDialog={confirmDialog}
                     setConfirmDialog={setConfirmDialog}
                 />
-                <PdfView
-                    confirmPdfdialog={confirmPdfdialog}
-                    setConfirmPdfdialog={setConfirmPdfdialog}
-                />
-
-            </Grid>
-
+            </div>
 
 
         </>

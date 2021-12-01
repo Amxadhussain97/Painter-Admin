@@ -89,8 +89,9 @@ const useStyles = makeStyles((theme) => ({
     },
     newButton: {
         position: 'absolute',
-        right: '12px',
-        top:"-24px"
+        right: '2px',
+        top:"0px"
+        // top: "-24px"
 
 
 
@@ -219,84 +220,94 @@ export default function Certificates(props) {
     ]
 
     return (
-        <div >
-
-            <Toolbar>
-                <Controls.Button
-                    text="Add New"
-                    variant="outlined"
-                    startIcon={<AddIcon />}
-                    className={classes.newButton}
-                    onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                />
-            </Toolbar>
-
-            <Grid container spacing={8} >
-                {
-                    userCertificates && userCertificates.map((certificates, i) =>
-                        <Grid key={i} item xs={6} sm={4} md={2}>
-                            <Card className={classes.card} >
-                                <CardActionArea>
-
-                                    <CardMedia
-                                        className={classes.media}
-                                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKU8AKvr73t742BUC9sRZsSffv56L7SLB3RQ&usqp=CAU"
-                                        title={certificates.name}
-                                    />
-
-                                    <CardContent>
-                                        <Divider />
-                                    </CardContent>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <CardHeader
-                                            avatar={
-                                                <PictureAsPdfIcon />
-                                            }
-
-                                            subheader={certificates.name}
-
-                                        />
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', marginTop: '20px', marginRight: '10px' }}>
+        <>
+            <div>
 
 
-                                            <EditIcon
-                                                onClick={() => { setOpenPopup(true); setRecordForEdit(certificates); }}
-                                                sx={{ fontSize: '20px', color: '#706a69', marginTop: '2px' }} />
-
-                                            <CloudDownloadIcon
-
-                                                onClick={() => window.location.replace(`http://127.0.0.1:8000/${certificates.file_id}`)}
-                                                sx={{ fontSize: '20px', marginLeft: '5px', color: '#706a69', marginTop: '2px' }}
-                                            >
-
-
-                                            </CloudDownloadIcon>
-                                            <DeleteIcon
-                                                onClick={() => {
-                                                    setConfirmDialog({
-                                                        isOpen: true,
-                                                        title: 'Are you sure to delete this record?',
-                                                        subTitle: "You can't undo this operation",
-                                                        onConfirm: () => { deleteCertificate(certificates.id); }
-                                                    })
-                                                }}
-
-                                                sx={{ fontSize: '23px', marginLeft: '5px', color: 'red' }} />
+                <Toolbar>
+                    <Controls.Button
+                        text="Add New"
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        className={classes.newButton}
+                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                    />
+                </Toolbar>
 
 
 
-                                        </Box>
-                                    </Box>
+                <Box sx={{ flexGrow: 1 }}>
+
+                    <Grid container spacing={4}>
+
+                        {
+                            userCertificates && userCertificates.map((certificates, i) =>
+                                <Grid item xs={6} md={2}>
+                                    <Card className={classes.card} >
+                                        <CardActionArea>
+
+                                            <CardMedia
+                                                className={classes.media}
+                                                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKU8AKvr73t742BUC9sRZsSffv56L7SLB3RQ&usqp=CAU"
+                                                title={certificates.name}
+                                            />
+
+                                            <CardContent>
+                                                <Divider />
+                                            </CardContent>
+                                            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                <CardHeader
+                                                    avatar={
+                                                        <PictureAsPdfIcon />
+                                                    }
+
+                                                    subheader={certificates.name}
+
+                                                />
+                                                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', marginTop: '20px', marginRight: '10px' }}>
 
 
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    )
-                }
+                                                    <EditIcon
+                                                        onClick={() => { setOpenPopup(true); setRecordForEdit(certificates); }}
+                                                        sx={{ fontSize: '20px', color: '#706a69', marginTop: '2px' }} />
+
+                                                    <CloudDownloadIcon
+
+                                                        onClick={() => window.location.replace(`http://amaderlab.xyz/${certificates.file_id}`)}
+                                                        sx={{ fontSize: '20px', marginLeft: '5px', color: '#706a69', marginTop: '2px' }}
+                                                    >
+
+
+                                                    </CloudDownloadIcon>
+                                                    <DeleteIcon
+                                                        onClick={() => {
+                                                            setConfirmDialog({
+                                                                isOpen: true,
+                                                                title: 'Are you sure to delete this record?',
+                                                                subTitle: "You can't undo this operation",
+                                                                onConfirm: () => { deleteCertificate(certificates.id); }
+                                                            })
+                                                        }}
+
+                                                        sx={{ fontSize: '23px', marginLeft: '5px', color: 'red' }} />
 
 
 
+                                                </Box>
+                                            </Box>
+
+
+                                        </CardActionArea>
+                                    </Card>
+                                </Grid>
+                            )
+
+                        }
+
+
+                    </Grid>
+
+                </Box>
                 <Popup
                     title="Insert Details"
                     openPopup={openPopup}
@@ -312,11 +323,9 @@ export default function Certificates(props) {
                     confirmDialog={confirmDialog}
                     setConfirmDialog={setConfirmDialog}
                 />
-
-            </Grid>
-
+            </div>
 
 
-        </div>
+        </>
     )
 }

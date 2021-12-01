@@ -24,7 +24,7 @@ export default function Galleries() {
     return (
         <div>
 
-
+       
             <Switch>
                 <Route exact path={`${path}/Galleries`}>
                     <Protected Cmp={Details} />
