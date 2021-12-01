@@ -7,12 +7,12 @@ import { NavLink } from 'react-router-dom';
 import { useStyles } from './HeaderStyle';
 import { Button } from '@mui/material';
 import { useRouteMatch } from 'react-router';
-
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 export default function SideNavData({ handleDrawerToggle }) {
     const classes = useStyles();
     let { path, url } = useRouteMatch();
     const listItemData = [
-        { label: "Users", link: "/user", icon: <MailIcon /> },
+        { label: "Users", link: "/user", icon: <SupervisedUserCircleIcon /> },
 
     ]
 

@@ -157,6 +157,7 @@ export default function UserComponent(props) {
         //  pagination.labelRowsPerPage=""
 
         editable={{
+
           onRowAdd: (newRow) => new Promise((resolve, reject) => {
             const updatedRows = [...data, { id: Math.floor(Math.random() * 100), ...newRow }]
             setTimeout(() => {
@@ -204,6 +205,13 @@ export default function UserComponent(props) {
           })
 
         }}
+        onRowClick={(evt, selectedRow) => {
+          history.push(`${path}/${selectedRow.id}/eptools`);
+          
+        }
+          // <NavLink to={`${path}/${selectedRow.id}/eptools`}></NavLink>
+          // <NavLink  to={`${path}/${selectedRow.id}/eptools`}></NavLink>
+        }
         options={{
           actionsColumnIndex: -1, addRowPosition: "first",
           filtering: true,

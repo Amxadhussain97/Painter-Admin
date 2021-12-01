@@ -17,6 +17,7 @@ import NotFound from './components/NotFound';
 
 
 const theme = createTheme({
+  
   palette: {
 
   },
@@ -28,7 +29,6 @@ const theme = createTheme({
 
 function App() {
   return (
-
 
     <BrowserRouter>
       <ThemeProvider theme={theme}>

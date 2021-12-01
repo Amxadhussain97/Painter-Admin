@@ -53,7 +53,7 @@ export const useStyles = makeStyles((theme) => ({
         height:"100vh",
         background:"#efefef",
         fontSize:"1rem",
-        padding: theme.spacing(10,2, 0, 32),//1 means 8 pixel top,right,bottom,left
+        padding: theme.spacing(9,2, 0, 22),//1 means 8 pixel top,right,bottom,left
         [theme.breakpoints.down("sm")]:{
             padding: theme.spacing(2,2),
             marginTop:'60px',

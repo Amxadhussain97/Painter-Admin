@@ -12,13 +12,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SideNavData from './SideNavData';
 import { useRouteMatch } from 'react-router';
 
-const drawerWidth = 240;
+const drawerWidth = 170;
 
 export default function SideNav(props) {
     // handleDrawerToggle= props.handleDrawerToggle;
@@ -43,8 +42,6 @@ export default function SideNav(props) {
         >
             {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
             <Drawer
-                //   container={container}
-                
                 variant="temporary"
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
