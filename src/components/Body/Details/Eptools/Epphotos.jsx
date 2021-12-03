@@ -243,14 +243,14 @@ export default function Epphotos() {
             <Grid container spacing={0}>
                 {
                     photos && photos.map((photo, i) => (
-                        <Grid item xs={12} md={4}>
-                            <ImageListItem key={i} style={{ height: "330px", width: "400px" }}>
+                        <Grid item xs={12} sm={6} md={4}>
+                            <ImageListItem key={i} style={{ height: "80%", width: "95%" }}>
                                 <img
                                     src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
                                     srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
                                     alt={`title`}
                                     loading="lazy"
-                                   
+
                                 />
                                 <ImageListItemBar
 

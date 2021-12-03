@@ -240,7 +240,7 @@ export default function Insurances(props) {
 
                         {
                             userInsurances && userInsurances.map((insurance, i) =>
-                                <Grid item xs={6} md={2}>
+                                <Grid item xs={12} sm={6} md={2}>
                                     <Card className={classes.card} >
                                         <CardActionArea>
 

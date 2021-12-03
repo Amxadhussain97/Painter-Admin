@@ -220,55 +220,55 @@ export default function Photos() {
       </Toolbar>
 
       <Grid container spacing={0}>
-       {
-        photos && photos.map((photo, i) => (
-          <Grid item xs={12} md={4}>
-                  <ImageListItem key={i} style={{height:"330px",width:"400px"}}>
-                    <img
-                      src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
-                      srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
-                      alt={`title`}
-                      loading="lazy"
-                    />
-                    <ImageListItemBar
+        {
+          photos && photos.map((photo, i) => (
+            <Grid item xs={12} sm={6} md={4}>
+              <ImageListItem key={i} style={{ height: "80%", width: "95%" }}>
+                <img
+                  src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
+                  srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
+                  alt={`title`}
+                  loading="lazy"
+                />
+                <ImageListItemBar
 
-                      actionIcon={
-                        <IconButton
-                          sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                          aria-label={`info about asds`}
-                        >
-                          <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(photo); }} style={{ marginRight: '10px', marginRight: '15px' }} />
-                          <DeleteIcon
-                            onClick={() => {
-                              setConfirmDialog({
-                                isOpen: true,
-                                title: 'Are you sure to delete this record?',
-                                subTitle: "You can't undo this operation",
-                                onConfirm: () => { deletePhoto(photo.id); }
-                              })
-                            }}
+                  actionIcon={
+                    <IconButton
+                      sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                      aria-label={`info about asds`}
+                    >
+                      <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(photo); }} style={{ marginRight: '10px', marginRight: '15px' }} />
+                      <DeleteIcon
+                        onClick={() => {
+                          setConfirmDialog({
+                            isOpen: true,
+                            title: 'Are you sure to delete this record?',
+                            subTitle: "You can't undo this operation",
+                            onConfirm: () => { deletePhoto(photo.id); }
+                          })
+                        }}
 
 
 
-                          />
+                      />
 
-                        </IconButton>
-                      }
-                    />
-                  </ImageListItem>
-                  </Grid>
+                    </IconButton>
+                  }
+                />
+              </ImageListItem>
+            </Grid>
 
-                ))
-               
-                }
-              
-        
-        
+          ))
+
+        }
+
+
+
 
       </Grid>
 
 
-        {/* <Grid container spacing={4}>
+      {/* <Grid container spacing={4}>
 
 
           <Grid item xs={12} md={12}>
@@ -316,7 +316,7 @@ export default function Photos() {
 
           </Grid>
         </Grid> */}
-      
+
       <Popup
         title="Insert Details"
         openPopup={openPopup}
