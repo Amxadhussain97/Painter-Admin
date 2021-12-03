@@ -31,11 +31,12 @@ export function CertificateForm(props) {
         if ('name' in fieldValues)
             temp.name = fieldValues.name ? "" : "This field is required."
         if ('file_id' in fieldValues)
-            temp.model = fieldValues.file_id ? "" : "Please insert a file"
+            temp.file = fieldValues.file_id ? "" : "Please insert a pdf file"
         setErrors({
             ...temp
         })
-
+        
+        
         if (fieldValues == values)
             return Object.values(temp).every(x => x == "")
     }
@@ -55,8 +56,10 @@ export function CertificateForm(props) {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
+            console.log("validated ");
             addOrEdit(values, resetForm);
         }
+       
     }
 
     useEffect(() => {
@@ -99,7 +102,7 @@ export function CertificateForm(props) {
                         onChange={fileHandler}
                     />
                     <Typography style={{ color: 'red', margin: "5px", width: '100%' }}>
-                        {errors.file}
+                        {fetcherror}
                     </Typography>
                     <div>
                         <Controls.Button

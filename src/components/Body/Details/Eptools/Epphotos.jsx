@@ -240,6 +240,60 @@ export default function Epphotos() {
                     onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
                 />
             </Toolbar>
+            <Grid container spacing={0}>
+                {
+                    photos && photos.map((photo, i) => (
+                        <Grid item xs={12} md={4}>
+                            <ImageListItem key={i} style={{ height: "330px", width: "400px" }}>
+                                <img
+                                    src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
+                                    srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
+                                    alt={`title`}
+                                    loading="lazy"
+                                   
+                                />
+                                <ImageListItemBar
+
+                                    actionIcon={
+                                        <IconButton
+                                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                            aria-label={`info about asds`}
+                                        >
+                                            <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(photo); }} style={{ marginRight: '10px', marginRight: '15px' }} />
+                                            <DeleteIcon
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure to delete this record?',
+                                                        subTitle: "You can't undo this operation",
+                                                        onConfirm: () => { deletePhoto(photo.id); }
+                                                    })
+                                                }}
+
+
+
+                                            />
+
+                                        </IconButton>
+                                    }
+                                />
+                            </ImageListItem>
+                        </Grid>
+
+                    ))
+
+                }
+
+
+
+
+            </Grid>
+
+
+
+            {/* 
+
+
             <ImageList sx={{ width: 1350, height: 600 }} cols={3} >
 
                 {
@@ -280,7 +334,7 @@ export default function Epphotos() {
 
 
                     ))}
-            </ImageList>
+            </ImageList> */}
 
             <Popup
                 title="Insert Details"

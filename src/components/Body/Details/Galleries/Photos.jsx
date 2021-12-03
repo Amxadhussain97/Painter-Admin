@@ -3,6 +3,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
+import { Box } from '@mui/system';
 import {
   useHistory
 } from "react-router-dom";
@@ -19,6 +21,7 @@ import Popup from '../../../Popup';
 import { PhotoForm } from './PhotoForm';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -215,48 +218,105 @@ export default function Photos() {
           onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
         />
       </Toolbar>
-      <ImageList sx={{ width: 1350, height: 600 }} cols={3} >
 
-        {
-          photos && photos.map((photo, i) => (
-            <ImageListItem key={i}>
-              <img
-                src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
-                srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
-                alt={`title`}
-                loading="lazy"
-              />
-              <ImageListItemBar
-
-                actionIcon={
-                  <IconButton
-                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                    aria-label={`info about asds`}
-                  >
-                    <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(photo); }} style={{ marginRight: '10px', marginRight: '15px' }} />
-                    <DeleteIcon
-                      onClick={() => {
-                        setConfirmDialog({
-                          isOpen: true,
-                          title: 'Are you sure to delete this record?',
-                          subTitle: "You can't undo this operation",
-                          onConfirm: () => { deletePhoto(photo.id); }
-                        })
-                      }}
-
-
-
+      <Grid container spacing={0}>
+       {
+        photos && photos.map((photo, i) => (
+          <Grid item xs={12} md={4}>
+                  <ImageListItem key={i} style={{height:"330px",width:"400px"}}>
+                    <img
+                      src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
+                      srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
+                      alt={`title`}
+                      loading="lazy"
                     />
+                    <ImageListItemBar
 
-                  </IconButton>
+                      actionIcon={
+                        <IconButton
+                          sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                          aria-label={`info about asds`}
+                        >
+                          <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(photo); }} style={{ marginRight: '10px', marginRight: '15px' }} />
+                          <DeleteIcon
+                            onClick={() => {
+                              setConfirmDialog({
+                                isOpen: true,
+                                title: 'Are you sure to delete this record?',
+                                subTitle: "You can't undo this operation",
+                                onConfirm: () => { deletePhoto(photo.id); }
+                              })
+                            }}
+
+
+
+                          />
+
+                        </IconButton>
+                      }
+                    />
+                  </ImageListItem>
+                  </Grid>
+
+                ))
+               
                 }
-              />
-            </ImageListItem>
+              
+        
+        
+
+      </Grid>
 
 
-          ))}
-      </ImageList>
+        {/* <Grid container spacing={4}>
 
+
+          <Grid item xs={12} md={12}>
+            <ImageList sx={{ width: 1300, height: 400 }} cols={4} >
+
+              {
+                photos && photos.map((photo, i) => (
+                  <ImageListItem key={i}>
+                    <img
+                      src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
+                      srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
+                      alt={`title`}
+                      loading="lazy"
+                    />
+                    <ImageListItemBar
+
+                      actionIcon={
+                        <IconButton
+                          sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                          aria-label={`info about asds`}
+                        >
+                          <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(photo); }} style={{ marginRight: '10px', marginRight: '15px' }} />
+                          <DeleteIcon
+                            onClick={() => {
+                              setConfirmDialog({
+                                isOpen: true,
+                                title: 'Are you sure to delete this record?',
+                                subTitle: "You can't undo this operation",
+                                onConfirm: () => { deletePhoto(photo.id); }
+                              })
+                            }}
+
+
+
+                          />
+
+                        </IconButton>
+                      }
+                    />
+                  </ImageListItem>
+
+
+                ))}
+            </ImageList>
+
+          </Grid>
+        </Grid> */}
+      
       <Popup
         title="Insert Details"
         openPopup={openPopup}

@@ -221,7 +221,7 @@ export default function Insurances(props) {
         <>
             <div>
 
-
+ 
                 <Toolbar>
                     <Controls.Button
                         text="Add New"

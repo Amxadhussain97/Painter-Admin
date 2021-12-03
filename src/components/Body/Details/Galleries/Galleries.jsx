@@ -23,6 +23,7 @@ export default function Galleries() {
 
     return (
         <div>
+          
 
        
             <Switch>
