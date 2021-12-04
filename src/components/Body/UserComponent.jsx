@@ -124,7 +124,8 @@ export default function UserComponent(props) {
 
       ),
 
-      render: rowData => <img src={`http://amaderlab.xyz/${rowData.imagePath}`} alt="" border="3" height="100" width="100" />
+      render: rowData => <img src={`http://amaderlab.xyz/${rowData.imagePath}`} alt="" height="50" width="50" style={{borderRadius: '50%',
+      }} />
     },
 
 
