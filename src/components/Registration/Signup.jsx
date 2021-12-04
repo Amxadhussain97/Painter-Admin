@@ -88,14 +88,24 @@ const Signup = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.message!="success") {
+                    if (data.message != "success") {
                         setFetcherror(data.message);
                         const timer = setTimeout(() => {
                             setFetcherror();
                         }, 2300);
                     }
                     else {
+                        let formData = new FormData();    //formdata object
                         localStorage.setItem("token", JSON.stringify(data.token));
+                        formData.append('role', 'Admin');
+                        let result = fetch("http://amaderlab.xyz/api/users/" + data.id, {
+                            method: "POST",
+                            headers: {
+                                "Authorization": `Bearer ${data.token}`,
+
+                            },
+                            body: formData
+                        })
                         history.push("/home/user");
                     }
                 })
