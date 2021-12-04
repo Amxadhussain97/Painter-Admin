@@ -111,6 +111,7 @@ export default function UserComponent(props) {
     {
       title: 'Avatar',
       field: 'imagePath',
+      filtering:false,
       editComponent: (props) => (
         <input
           // accept="image/*"

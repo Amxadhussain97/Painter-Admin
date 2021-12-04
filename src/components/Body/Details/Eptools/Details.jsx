@@ -64,8 +64,7 @@ export default function Details() {
 
 
     useEffect(async () => {
-        console.log("ide oilo ", id);
-        let result = await fetch(`http://amaderlab.xyz/api/eptools?user_id=${id}`, {
+        await fetch(`http://amaderlab.xyz/api/eptools?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -73,8 +72,18 @@ export default function Details() {
                 "Accept": "application/json"
             },
         })
-        result = await result.json();
-        setData(result.eptools);
+        .then(res => res.json())
+            .then(data => {
+                setData(data.eptools);
+            })
+            .catch(error => {
+
+                // setFetcherror(error.message);
+                // const timer = setTimeout(() => {
+                //     setFetcherror();
+                // }, 2300);
+
+            })
 
     }, [reload])
 

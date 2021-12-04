@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     newButton: {
         position: 'absolute',
         right: '2px',
-        top:"0px"
+        top: "0px"
         // top: "-24px"
 
 
@@ -122,7 +122,7 @@ export default function Certificates(props) {
 
 
     useEffect(async () => {
-        let result = await fetch(`http://amaderlab.xyz/api/certificates?user_id=${id}`, {
+        await fetch(`http://amaderlab.xyz/api/certificates?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -130,8 +130,18 @@ export default function Certificates(props) {
                 "Accept": "application/json"
             },
         })
-        result = await result.json();
-        setUserCertificates(result.list);
+            .then(res => res.json())
+            .then(data => {
+                setUserCertificates(data.list);
+            })
+            .catch(error => {
+
+                // setFetcherror(error.message);
+                // const timer = setTimeout(() => {
+                //     setFetcherror();
+                // }, 2300);
+
+            })
 
     }, [reload])
 

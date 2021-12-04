@@ -119,7 +119,7 @@ export default function Insurances(props) {
 
 
     useEffect(async () => {
-        let result = await fetch(`http://amaderlab.xyz/api/insurances?user_id=${id}`, {
+        await fetch(`http://amaderlab.xyz/api/insurances?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -127,8 +127,22 @@ export default function Insurances(props) {
                 "Accept": "application/json"
             },
         })
-        result = await result.json();
-        setUserInsurances(result.list);
+            .then(res => res.json())
+            .then(data => {
+                setUserInsurances(data.list);
+            })
+            .catch(error => {
+
+                // setFetcherror(error.message);
+                // const timer = setTimeout(() => {
+                //     setFetcherror();
+                // }, 2300);
+
+            })
+
+
+        // result = await result.json();
+        // setUserInsurances(result.list);
 
     }, [reload])
 
@@ -221,7 +235,7 @@ export default function Insurances(props) {
         <>
             <div>
 
- 
+
                 <Toolbar>
                     <Controls.Button
                         text="Add New"
