@@ -284,7 +284,6 @@ export default function Insurances(props) {
                                                         sx={{ fontSize: '20px', color: '#706a69', marginTop: '2px' }} />
 
                                                     <CloudDownloadIcon
-
                                                         onClick={() => window.location.replace(`http://amaderlab.xyz/${insurance.file_id}`)}
                                                         sx={{ fontSize: '20px', marginLeft: '5px', color: '#706a69', marginTop: '2px' }}
                                                     >

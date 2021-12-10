@@ -22,6 +22,9 @@ import { useState, useEffect } from 'react'
 import Galleries from './Galleries/Galleries'
 import { Link } from 'react-router-dom';
 import { useRouteMatch } from 'react-router';
+import Leads from './Leads/Leads';
+import Subpainters from './Subpainters/Subpainters';
+import Dealers from './Dealers/Dealers';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -112,7 +115,7 @@ export default function Details() {
 
     const classes = useStyles();
 
-    const allTabs = ['/Eptools', '/Certificates', '/Insurances', '/Galleries'];
+    const allTabs = ['/Eptools', '/Certificates', '/Insurances', '/Galleries', '/Leads'];
 
     return (
 
@@ -143,6 +146,10 @@ export default function Details() {
                                 <Tab label="Certificates" {...a11yProps(1)} to={`${url}/Certificates`} component={Link} />
                                 <Tab label="Insurances" {...a11yProps(2)} to={`${url}/Insurances`} component={Link} />
                                 <Tab label="Galleries" {...a11yProps(3)} to={`${url}/Galleries`} component={Link} />
+                                <Tab label="Leads" {...a11yProps(4)} to={`${url}/Leads`} component={Link} />
+                                <Tab label="Subpainters" {...a11yProps(5)} to={`${url}/Subpainters`} component={Link} />
+                                <Tab label="Dealers" {...a11yProps(6)} to={`${url}/Dealers`} component={Link} />
+
                             </Tabs>
                         </Box>
                         <TabPanel value={value} index={0} to={'/Eptools'}>
@@ -156,6 +163,15 @@ export default function Details() {
                         </TabPanel>
                         <TabPanel value={value} index={3}>
                             <Galleries id={id} />
+                        </TabPanel>
+                        <TabPanel value={value} index={4}>
+                            <Leads id={id} />
+                        </TabPanel>
+                        <TabPanel value={value} index={5}>
+                            <Subpainters id={id} />
+                        </TabPanel>
+                        <TabPanel value={value} index={6}>
+                            <Dealers id={id} />
                         </TabPanel>
                     </Box>
 

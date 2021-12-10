@@ -62,18 +62,6 @@ const tableIcons = {
 };
 
 
-
-
-
-
-// const empList = [
-//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 1, name: "Neeraj", email: 'neeraj@gmail.com', phone: 9876543210, city: "Bangalore" },
-//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 2, name: "Raj", email: 'raj@gmail.com', phone: 9812345678, city: "Chennai" },
-//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 3, name: "David", email: 'david342@gmail.com', phone: 7896536289, city: "Jaipur" },
-//   { avatar: "https://reqres.in/img/faces/1-image.jpg", id: 4, name: "Vikas", email: 'vikas75@gmail.com', phone: 9087654321, city: "Hyderabad" },
-// ]
-
-
 export default function UserComponent(props) {
   const classes = useStyles();
   let history = useHistory();
@@ -111,7 +99,7 @@ export default function UserComponent(props) {
     {
       title: 'Avatar',
       field: 'imagePath',
-      filtering:false,
+      filtering: false,
       editComponent: (props) => (
         <input
           // accept="image/*"
@@ -124,7 +112,8 @@ export default function UserComponent(props) {
 
       ),
 
-      render: rowData => <img src={`http://amaderlab.xyz/${rowData.imagePath}`} alt="" height="50" width="50" style={{borderRadius: '50%',
+      render: rowData => <img src={`http://amaderlab.xyz/${rowData.imagePath}`} alt="" height="50" width="50" style={{
+        borderRadius: '50%',
       }} />
     },
 
@@ -134,7 +123,7 @@ export default function UserComponent(props) {
     { title: "Name", field: "name" },
     { title: "Email", field: "email" },
     { title: "Gender", field: 'gender', },
-    { title: "Phone Number", field: 'phonenumber', },
+    { title: "Phone", field: 'phone', },
     { title: "BirthDate", field: 'birthDate', },
     { title: "Area", field: 'area', },
     { title: "BankName", field: 'bankName', },
@@ -209,7 +198,7 @@ export default function UserComponent(props) {
         }}
         onRowClick={(evt, selectedRow) => {
           history.push(`${path}/${selectedRow.id}/eptools`);
-          
+
         }
           // <NavLink to={`${path}/${selectedRow.id}/eptools`}></NavLink>
           // <NavLink  to={`${path}/${selectedRow.id}/eptools`}></NavLink>
