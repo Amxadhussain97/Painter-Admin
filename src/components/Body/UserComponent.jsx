@@ -71,7 +71,7 @@ export default function UserComponent(props) {
   let token = localStorage.getItem('token');
   token = token.replace(/^\"(.+)\"$/, "$1");
   useEffect(async () => {
-    let result = await fetch("http://amaderlab.xyz/api/users", {
+    await fetch("http://amaderlab.xyz/api/users", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -79,8 +79,13 @@ export default function UserComponent(props) {
         "Accept": "application/json"
       },
     })
-    result = await result.json();
-    setData(result.users);
+    .then(res => res.json())
+    .then(data => setData(data.users) )
+    .catch(error => {
+        console.log(error.message);
+
+    })
+  
     //console.log("users ",result.usreers);
 
   }, [reload])
