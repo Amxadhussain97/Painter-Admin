@@ -129,7 +129,7 @@ export default function Details() {
 
 
     useEffect(async () => {
-        let result = await fetch(`http://amaderlab.xyz/api/galleries?user_id=${id}`, {
+        await fetch(`http://amaderlab.xyz/api/galleries?user_id=${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -137,9 +137,19 @@ export default function Details() {
                 "Accept": "application/json"
             },
         })
-        result = await result.json();
+            .then(res => res.json())
+            .then(data => {
+                setGalleries(data.Galleries);
+            })
+            .catch(error => {
 
-        setGalleries(result.Galleries);
+                // setFetcherror(error.message);
+                // const timer = setTimeout(() => {
+                //     setFetcherror();
+                // }, 2300);
+
+            })
+
 
 
     }, [reload])

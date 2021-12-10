@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     newButton: {
         position: 'absolute',
         right: '2px',
-        top: "0px"
+        top: "-10px"
         // top: "-24px"
 
 
@@ -192,12 +192,12 @@ export default function Certificates(props) {
 
     }
 
-    async function deleteCertificate(id) {
+    async function deleteCertificate(certificate_id) {
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
         })
-        await fetch(`http://amaderlab.xyz/api/certificates/${id}`, {
+        await fetch(`http://amaderlab.xyz/api/certificates/${certificate_id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,

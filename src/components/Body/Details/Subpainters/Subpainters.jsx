@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Subpainters() {
+export default function Subpainters(props) {
     const classes = useStyles();
 
     let { id } = useParams();
@@ -263,7 +263,7 @@ export default function Subpainters() {
         { title: "Name", field: "name" },
         { title: "Email", field: "email" },
         { title: "Gender", field: 'gender', },
-        { title: "Phone Number", field: 'phonenumber', },
+        { title: "Phone", field: 'phone', },
         { title: "BirthDate", field: 'birthDate', },
         { title: "Area", field: 'area', },
         { title: "BankName", field: 'bankName', },
@@ -320,8 +320,9 @@ export default function Subpainters() {
                         // console.log(" id ",selectedRow.id);
                         // const updatedRows = [...data]
                         // updatedRows.splice(index, 1)
+               
+                        let result = fetch(`http://amaderlab.xyz/api/subpainters/${selectedRow.id}?user_id=${id}`, {
 
-                        let result = fetch(`http://amaderlab.xyz/api/subpainters/${selectedRow.id}`, {
                             method: "DELETE",
                             headers: {
                                 "Authorization": `Bearer ${token}`,

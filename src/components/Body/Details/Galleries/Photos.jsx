@@ -105,22 +105,27 @@ export default function Photos() {
   let { path, url } = useRouteMatch();
 
   useEffect(async () => {
-    let result = await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos`, {
+     await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
+    }).then(res => res.json())
+    .then(data => {
+      setPhotos(data.photos);
     })
-      .catch(err => {
-        console.log(err.message);
-      })
-    result = await result.json();
+    .catch(error => {
 
-    setPhotos(result.photos);
-    console.log("galler ", result);
+        // setFetcherror(error.message);
+        // const timer = setTimeout(() => {
+        //     setFetcherror();
+        // }, 2300);
 
+    })
+    
+   
 
   }, [reload])
 
@@ -180,6 +185,8 @@ export default function Photos() {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
     })
       .then(() => {
@@ -187,7 +194,7 @@ export default function Photos() {
         setReload(!reload);
       })
       .catch(error => {
-        console.log("error", error.message);
+        console.log("error photo ", error.message);
 
       })
   };
