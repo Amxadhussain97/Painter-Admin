@@ -29,6 +29,8 @@ const Signup = () => {
 
 
     const initialFValues = {
+        name:'',
+        phone:'',
         email: '',
         password: '',
         confirmpassword: '',
@@ -38,9 +40,12 @@ const Signup = () => {
     //Validation
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-
+        if ('name' in fieldValues)
+        temp.name = fieldValues.name.length > 0 ? "" : "Enter a Name"
         if ('email' in fieldValues)
             temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+        if ('phone' in fieldValues)
+            temp.phone = fieldValues.phone.length > 5 ? "" : "Phone number must have atleast 5 digit"
         if ('password' in fieldValues)
             temp.password = fieldValues.password.length > 0 ? "" : "Enter a password"
         if ('confirmpassword' in fieldValues)
@@ -75,7 +80,7 @@ const Signup = () => {
         e.preventDefault();
         if (validate()) {
             setFetcherror();
-            let item = Object.assign({}, { email: values.email, password: values.password, role: 'Admin' });
+            let item = Object.assign({}, {  name: values.name, phone: values.phone, email: values.email, password: values.password, role: 'Admin' });
 
             await fetch("http://amaderlab.xyz/api/register", {
                 method: "POST",
@@ -94,17 +99,7 @@ const Signup = () => {
                         }, 2300);
                     }
                     else {
-                        let formData = new FormData();    //formdata object
                         localStorage.setItem("token", JSON.stringify(data.token));
-                        formData.append('role', 'Admin');
-                        let result = fetch("http://amaderlab.xyz/api/users/" + data.id, {
-                            method: "POST",
-                            headers: {
-                                "Authorization": `Bearer ${data.token}`,
-
-                            },
-                            body: formData
-                        })
                         history.push("/home/user");
                     }
                 })
@@ -142,6 +137,22 @@ const Signup = () => {
                         variant="outlined" fullWidth required
                         margin="normal"
                     /> */}
+                    <TextField id="outlined-basic"
+                        value={values.name}
+                        onChange={handleInputChange}
+                        label="Name" type="name" variant="outlined"
+                        fullWidth required margin="normal"
+                        name="name"
+                        {...(errors.name && { error: true, helperText: errors.name })}
+                    />
+                    <TextField id="outlined-basic"
+                        value={values.phone}
+                        onChange={handleInputChange}
+                        label="Phone" type="phone" variant="outlined"
+                        fullWidth required margin="normal"
+                        name="phone"
+                        {...(errors.phone && { error: true, helperText: errors.phone })}
+                    />
                     <TextField id="outlined-basic"
                         value={values.email}
                         onChange={handleInputChange}

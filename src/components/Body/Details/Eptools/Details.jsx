@@ -26,6 +26,9 @@ import { NavLink } from 'react-router-dom';
 import { useRouteMatch } from 'react-router';
 import { useParams } from 'react-router';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
+import Notification from '../../../controls/Notification';
+
+
 
 
 const tableIcons = {
@@ -55,6 +58,7 @@ export default function Details() {
     let { path, url } = useRouteMatch();
     const [data, setData] = useState();
     const [reload, setReload] = useState(true);
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
     let token = localStorage.getItem('token');
     token = token.replace(/^\"(.+)\"$/, "$1");
 
@@ -72,7 +76,7 @@ export default function Details() {
                 "Accept": "application/json"
             },
         })
-        .then(res => res.json())
+            .then(res => res.json())
             .then(data => {
                 setData(data.eptools);
             })
@@ -121,10 +125,31 @@ export default function Details() {
                             },
                             body: JSON.stringify(newRow)
                         })
-                        setTimeout(() => {
+                            .then(() => {
+                                setTimeout(() => {
+                                    setReload(!reload);
+                                    resolve()
+                                    setNotify({
+                                    isOpen: true,
+                                    message: 'Inserted Successfully',
+                                    type: 'success'
+                                })
+
+                                }, 2000)
+                                
+                           
+                            })
+                            .catch(error => {
+                                setNotify({
+                                    isOpen: true,
+                                    message: error.message,
+                                    type: 'error'
+                                })
+
+                            })
                             setReload(!reload);
-                            resolve()
-                        }, 2000)
+
+
                     }),
                     onRowDelete: selectedRow => new Promise((resolve, reject) => {
                         const index = selectedRow.tableData.id;
@@ -139,11 +164,19 @@ export default function Details() {
                             },
                         })
                             .then(() => {
-                                console.log("delete successfull");
+                                setNotify({
+                                    isOpen: true,
+                                    message: 'Deleted Successfully',
+                                    type: 'success'
+                                })
                                 setReload(!reload);
                             })
                             .catch(error => {
-                                console.log("error", error.message);
+                                setNotify({
+                                    isOpen: true,
+                                    message: error.message,
+                                    type: 'error'
+                                })
 
                             })
 
@@ -166,6 +199,28 @@ export default function Details() {
                             },
                             body: formData
                         })
+                        .then(() => {
+                                setTimeout(() => {
+                                    setReload(!reload);
+                                    resolve()
+                                    setNotify({
+                                    isOpen: true,
+                                    message: 'Updated Successfully',
+                                    type: 'success'
+                                })
+
+                                }, 2000)
+                                
+                           
+                            })
+                            .catch(error => {
+                                setNotify({
+                                    isOpen: true,
+                                    message: error.message,
+                                    type: 'error'
+                                })
+
+                            })
                         updatedRows[index] = updatedRow
                         setTimeout(() => {
                             setData(updatedRows)
@@ -192,6 +247,10 @@ export default function Details() {
                     }
                 }}
 
+            />
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
             />
 
 

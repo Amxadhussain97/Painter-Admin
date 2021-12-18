@@ -36,6 +36,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import Link from '@material-ui/core/Link';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
+import Notification from '../../../controls/Notification';
+
+
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -117,6 +120,7 @@ export default function Certificates(props) {
     const [reload, setReload] = useState(true)
     const [records, setRecords] = useState()
     const [recordForEdit, setRecordForEdit] = useState(null)
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
 
@@ -179,11 +183,33 @@ export default function Certificates(props) {
                 },
                 body: formData
             })
-                .then(res => res.json())
-                .catch(error => {
-                    console.log(error.message);
-
+            .then(res => res.json())
+            .then(res => {
+              if (res.message != "Success") {
+    
+                setNotify({
+                  isOpen: true,
+                  message: res.message,
+                  type: 'error'
                 })
+              }
+              else {
+                setNotify({
+                  isOpen: true,
+                  message: 'Inserted Successfully',
+                  type: 'success'
+                })
+                setOpenPopup(false);
+              }
+            })
+            .catch(error => {
+              setNotify({
+                isOpen: true,
+                message: error.message,
+                type: 'error'
+              })
+    
+            })
         }
         setReload(!reload);
         setRecordForEdit(null);
@@ -203,14 +229,19 @@ export default function Certificates(props) {
                 "Authorization": `Bearer ${token}`,
             },
         })
-            .then(() => {
-                console.log("delete successfull");
-                setReload(!reload);
-            })
-            .catch(error => {
-                console.log("error", error.message);
+        .then(() => {
+               
+            setReload(!reload);
+            setNotify({
+                isOpen: true,
+                message: 'Deleted Successfully',
+                type: 'success'
+              })
+        })
+        .catch(error => {
+            console.log("error", error.message);
 
-            })
+        })
     };
 
 
@@ -334,6 +365,10 @@ export default function Certificates(props) {
                     setConfirmDialog={setConfirmDialog}
                 />
             </div>
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
 
 
         </>

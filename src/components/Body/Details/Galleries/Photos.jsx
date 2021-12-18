@@ -168,7 +168,7 @@ export default function Photos() {
         .then(res => res.json())
         .then(res => {
           if (res.message != "Success") {
-            console.log(res.message);
+
             setNotify({
               isOpen: true,
               message: 'Image Must be less than 2048mb',
@@ -309,54 +309,7 @@ export default function Photos() {
       </Grid>
 
 
-      {/* <Grid container spacing={4}>
-
-
-          <Grid item xs={12} md={12}>
-            <ImageList sx={{ width: 1300, height: 400 }} cols={4} >
-
-              {
-                photos && photos.map((photo, i) => (
-                  <ImageListItem key={i}>
-                    <img
-                      src={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format`}
-                      srcSet={`http://amaderlab.xyz/${photo.image_id}?w=164&h=104&fit=crop&auto=format&dpr=2 2x`}
-                      alt={`title`}
-                      loading="lazy"
-                    />
-                    <ImageListItemBar
-
-                      actionIcon={
-                        <IconButton
-                          sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                          aria-label={`info about asds`}
-                        >
-                          <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(photo); }} style={{ marginRight: '10px', marginRight: '15px' }} />
-                          <DeleteIcon
-                            onClick={() => {
-                              setConfirmDialog({
-                                isOpen: true,
-                                title: 'Are you sure to delete this record?',
-                                subTitle: "You can't undo this operation",
-                                onConfirm: () => { deletePhoto(photo.id); }
-                              })
-                            }}
-
-
-
-                          />
-
-                        </IconButton>
-                      }
-                    />
-                  </ImageListItem>
-
-
-                ))}
-            </ImageList>
-
-          </Grid>
-        </Grid> */}
+    
 
       <Popup
         title="Insert Details"

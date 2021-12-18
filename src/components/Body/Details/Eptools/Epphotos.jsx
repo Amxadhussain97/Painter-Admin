@@ -43,6 +43,7 @@ import { GalleryForm } from '../Galleries/GalleryForm';
 import { PhotoForm } from '../Galleries/PhotoForm';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
+import Notification from '../../../controls/Notification';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -120,9 +121,13 @@ export default function Epphotos() {
     const [openPopup, setOpenPopup] = useState(false);
     const [reload, setReload] = useState(true);
     const [photos, setPhotos] = useState();
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
     const [records, setRecords] = useState()
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+    
+
+
 
     useEffect(async () => {
         let result = await fetch(`http://amaderlab.xyz/api/eptools/${eptoolid}/photos`, {
@@ -178,11 +183,33 @@ export default function Epphotos() {
                 },
                 body: formData
             })
-                .then(res => res.json())
-                .catch(error => {
-                    console.log(error.message);
-
+            .then(res => res.json())
+            .then(res => {
+              if (res.message != "Success") {
+    
+                setNotify({
+                  isOpen: true,
+                  message: 'Image Must be less than 2048mb',
+                  type: 'error'
                 })
+              }
+              else {
+                setNotify({
+                  isOpen: true,
+                  message: 'Inserted Successfully',
+                  type: 'success'
+                })
+                setOpenPopup(false);
+              }
+            })
+            .catch(error => {
+              setNotify({
+                isOpen: true,
+                message: error.message,
+                type: 'error'
+              })
+    
+            })
         }
         setReload(!reload);
         setRecordForEdit(null);
@@ -204,14 +231,21 @@ export default function Epphotos() {
                 "Authorization": `Bearer ${token}`,
             },
         })
-            .then(() => {
-                console.log("delete successfull");
-                setReload(!reload);
+        .then(() => {
+            setNotify({
+              isOpen: true,
+              message: 'Deleted Successfully',
+              type: 'success'
             })
-            .catch(error => {
-                console.log("error", error.message);
-
+            setReload(!reload);
+          })
+          .catch(error => {
+            setNotify({
+              isOpen: true,
+              message: error.message,
+              type: 'error'
             })
+          })
     };
 
     const handleClick = (event) => {
@@ -350,6 +384,10 @@ export default function Epphotos() {
             <ConfirmDialog
                 confirmDialog={confirmDialog}
                 setConfirmDialog={setConfirmDialog}
+            />
+             <Notification
+                notify={notify}
+                setNotify={setNotify}
             />
 
         </>

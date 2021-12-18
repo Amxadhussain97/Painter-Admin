@@ -34,7 +34,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { InsuranceForm } from './InsuranceForm';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
 import PdfView from '../../../controls/PdfView';
-
+import Notification from '../../../controls/Notification';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -113,6 +113,7 @@ export default function Insurances(props) {
     const [userInsurances, setUserInsurances] = useState([])
     const [reload, setReload] = useState(true)
     const [records, setRecords] = useState()
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
     const [confirmPdfdialog, setConfirmPdfdialog] = useState({ isOpen: false, title: '', subTitle: '', pdf: '' })
@@ -180,11 +181,33 @@ export default function Insurances(props) {
                 },
                 body: formData
             })
-                .then(res => res.json())
-                .catch(error => {
-                    console.log(error.message);
-
+            .then(res => res.json())
+            .then(res => {
+              if (res.message != "Success") {
+    
+                setNotify({
+                  isOpen: true,
+                  message: res.message,
+                  type: 'error'
                 })
+              }
+              else {
+                setNotify({
+                  isOpen: true,
+                  message: 'Inserted Successfully',
+                  type: 'success'
+                })
+                setOpenPopup(false);
+              }
+            })
+            .catch(error => {
+              setNotify({
+                isOpen: true,
+                message: error.message,
+                type: 'error'
+              })
+    
+            })
         }
         setReload(!reload);
         setRecordForEdit(null);
@@ -205,8 +228,13 @@ export default function Insurances(props) {
             },
         })
             .then(() => {
-                console.log("delete successfull");
+               
                 setReload(!reload);
+                setNotify({
+                    isOpen: true,
+                    message: 'Deleted Successfully',
+                    type: 'success'
+                  })
             })
             .catch(error => {
                 console.log("error", error.message);
@@ -333,6 +361,10 @@ export default function Insurances(props) {
                 <ConfirmDialog
                     confirmDialog={confirmDialog}
                     setConfirmDialog={setConfirmDialog}
+                />
+                <Notification
+                notify={notify}
+                setNotify={setNotify}
                 />
             </div>
 

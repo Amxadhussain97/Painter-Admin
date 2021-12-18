@@ -190,18 +190,20 @@ export default function UserComponent(props) {
             Object.entries(updatedRow).forEach(([key, value]) => {
               // console.log("key ",key);
               // console.log("value ",value);
-              if(key=="imagePath")
-              {
-                if(value.name) formData.append(key, value);
+              if (key == "imagePath" && value) {
+                if (value.name) formData.append(key, value);
+      
               }
-              else formData.append(key, value);
+              else if(value) formData.append(key, value);
             });
-
-            let result = fetch("http://amaderlab.xyz/api/users/" + updatedRow.id, {
+        
+            fetch("http://amaderlab.xyz/api/users/" + updatedRow.id, {
 
               method: "POST",
               headers: {
                 "Authorization": `Bearer ${token}`,
+                "Access-Control-Allow-Origin": "*",
+
 
               },
               body: formData
@@ -209,7 +211,7 @@ export default function UserComponent(props) {
               .then(res => res.json())
               .then(res => {
                 if (res.message != "Success") {
-        
+
                   setNotify({
                     isOpen: true,
                     message: res.message,
@@ -222,17 +224,17 @@ export default function UserComponent(props) {
                     message: 'Inserted Successfully',
                     type: 'success'
                   })
-                
+
                 }
               })
             updatedRows[index] = updatedRow
             setTimeout(() => {
               setData(updatedRows)
-              console.log("data ", data);
               setReload(!reload);
-              resolve()
+              resolve();
             }, 2000)
           })
+
 
         }}
         onRowClick={(evt, selectedRow) => {
