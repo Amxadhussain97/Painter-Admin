@@ -22,6 +22,9 @@ import { PhotoForm } from './PhotoForm';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
 import { Typography } from '@material-ui/core';
+import Notification from '../../../controls/Notification';
+
+
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -98,14 +101,15 @@ export default function Photos() {
   const [openPopup, setOpenPopup] = useState(false);
   const [reload, setReload] = useState(true);
   const [photos, setPhotos] = useState();
-  const [records, setRecords] = useState()
+  const [records, setRecords] = useState();
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
   let { path, url } = useRouteMatch();
 
   useEffect(async () => {
-     await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos`, {
+    await fetch(`http://amaderlab.xyz/api/galleries/${galleryid}/photos`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -113,19 +117,19 @@ export default function Photos() {
         "Accept": "application/json"
       },
     }).then(res => res.json())
-    .then(data => {
-      setPhotos(data.photos);
-    })
-    .catch(error => {
+      .then(data => {
+        setPhotos(data.photos);
+      })
+      .catch(error => {
 
         // setFetcherror(error.message);
         // const timer = setTimeout(() => {
         //     setFetcherror();
         // }, 2300);
 
-    })
-    
-   
+      })
+
+
 
   }, [reload])
 
@@ -162,14 +166,37 @@ export default function Photos() {
         body: formData
       })
         .then(res => res.json())
+        .then(res => {
+          if (res.message != "Success") {
+            console.log(res.message);
+            setNotify({
+              isOpen: true,
+              message: 'Image Must be less than 2048mb',
+              type: 'error'
+            })
+          }
+          else {
+            setNotify({
+              isOpen: true,
+              message: 'Inserted Successfully',
+              type: 'success'
+            })
+            setOpenPopup(false);
+          }
+        })
         .catch(error => {
-          console.log(error.message);
+          setNotify({
+            isOpen: true,
+            message: error.message,
+            type: 'error'
+          })
 
         })
     }
+
     setReload(!reload);
     setRecordForEdit(null);
-    setOpenPopup(false);
+  
 
 
   }
@@ -190,12 +217,19 @@ export default function Photos() {
       },
     })
       .then(() => {
-        console.log("delete successfull");
+        setNotify({
+          isOpen: true,
+          message: 'Deleted Successfully',
+          type: 'success'
+        })
         setReload(!reload);
       })
       .catch(error => {
-        console.log("error photo ", error.message);
-
+        setNotify({
+          isOpen: true,
+          message: error.message,
+          type: 'error'
+        })
       })
   };
 
@@ -335,6 +369,10 @@ export default function Photos() {
           addOrEdit={addOrEdit} />
 
       </Popup>
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+      />
       <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}

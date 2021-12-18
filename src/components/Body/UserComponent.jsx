@@ -26,7 +26,8 @@ import { NavLink } from 'react-router-dom';
 import { useRouteMatch } from 'react-router';
 import Button from '../controls/Button';
 import { Typography, TextField } from '@material-ui/core';
-
+import Notification from '../controls/Notification';
+import Popup from '../Popup';
 import {
   BrowserRouter,
   Switch,
@@ -68,11 +69,12 @@ export default function UserComponent(props) {
   let { path, url } = useRouteMatch();
   const [data, setData] = useState();
   const [reload, setReload] = useState(true);
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   let token = localStorage.getItem('token');
   token = token.replace(/^\"(.+)\"$/, "$1");
   useEffect(async () => {
-     await fetch("http://amaderlab.xyz/api/users", {
-      
+    await fetch("http://amaderlab.xyz/api/users", {
+
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -80,19 +82,19 @@ export default function UserComponent(props) {
         "Accept": "application/json"
       },
     })
-    .then(res => res.json())
-            .then(data => {
-              setData(data.users);
-            })
-            .catch(error => {
+      .then(res => res.json())
+      .then(data => {
+        setData(data.users);
+      })
+      .catch(error => {
 
-                // setFetcherror(error.message);
-                // const timer = setTimeout(() => {
-                //     setFetcherror();
-                // }, 2300);
+        // setFetcherror(error.message);
+        // const timer = setTimeout(() => {
+        //     setFetcherror();
+        // }, 2300);
 
-            })
-  
+      })
+
 
   }, [reload])
 
@@ -186,11 +188,17 @@ export default function UserComponent(props) {
 
             const formData = new FormData();
             Object.entries(updatedRow).forEach(([key, value]) => {
-              if (value) formData.append(key, value);
+              // console.log("key ",key);
+              // console.log("value ",value);
+              if(key=="imagePath")
+              {
+                if(value.name) formData.append(key, value);
+              }
+              else formData.append(key, value);
             });
 
             let result = fetch("http://amaderlab.xyz/api/users/" + updatedRow.id, {
-             
+
               method: "POST",
               headers: {
                 "Authorization": `Bearer ${token}`,
@@ -198,6 +206,25 @@ export default function UserComponent(props) {
               },
               body: formData
             })
+              .then(res => res.json())
+              .then(res => {
+                if (res.message != "Success") {
+        
+                  setNotify({
+                    isOpen: true,
+                    message: res.message,
+                    type: 'error'
+                  })
+                }
+                else {
+                  setNotify({
+                    isOpen: true,
+                    message: 'Inserted Successfully',
+                    type: 'success'
+                  })
+                
+                }
+              })
             updatedRows[index] = updatedRow
             setTimeout(() => {
               setData(updatedRows)
@@ -212,8 +239,7 @@ export default function UserComponent(props) {
           history.push(`${path}/${selectedRow.id}/eptools`);
 
         }
-          // <NavLink to={`${path}/${selectedRow.id}/eptools`}></NavLink>
-          // <NavLink  to={`${path}/${selectedRow.id}/eptools`}></NavLink>
+          //  
         }
         options={{
           actionsColumnIndex: -1, addRowPosition: "first",
@@ -233,7 +259,10 @@ export default function UserComponent(props) {
         }}
 
       />
-
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+      />
 
 
     </div>
@@ -242,6 +271,32 @@ export default function UserComponent(props) {
 
 
 }
+
+// .then(res => res.json())
+// .then(res => {
+//   if (res.message != "Success") {
+//     console.log(res.message);
+//     setNotify({
+//       isOpen: true,
+//       message: 'Image Must be less than 2048mb',
+//       type: 'error'
+//     })
+//   }
+//   else {
+//     setNotify({
+//       isOpen: true,
+//       message: 'Inserted Successfully',
+//       type: 'success'
+//     })
+//     setOpenPopup(false);
+//   }
+// })
+// .catch(error => {
+//   setNotify({
+//     isOpen: true,
+//     message: error.message,
+//     type: 'error'
+//   })
 
 
 
