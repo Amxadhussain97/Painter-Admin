@@ -102,17 +102,21 @@ export default function Details() {
             },
         })
         .then(res => res.json())
-        .then(res => {
-            // console.log("aise ",res.user);
-            setUserData(res.user);
-            // console.log(userData.name);
-         
-        })
-        .catch(error => {
-        
+            .then(res => {
+                console.log("res ",res.user);
+                setUserData(res.user);
+                console.log("now ",userData[0]);
+            })
+            .catch(error => {
 
-        })
+                // setFetcherror(error.message);
+                // const timer = setTimeout(() => {
+                //     setFetcherror();
+                // }, 2300);
+
+            })
        
+        
 
     }, [])
 
@@ -133,15 +137,15 @@ export default function Details() {
             <Grid item xs={12} md={12} sm={12}>
                 <Paper>
                     <Card sx={{ maxWidth: 400 }} elevation={0}>
-                        <CardHeader
+                        {/* <CardHeader
                             avatar={
                                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                                     {userData[0].name ? userData[0].name[0] : ""}
                                 </Avatar>
                             }
-                            title={userData[0].name ? userData[0].name : ""}
+                            title={userData[0].name ? userData.name[0] : ""}
                             subheader={userData[0].role ? userData[0].role : ""}
-                        />
+                        /> */}
                     </Card>
                     <Box sx={{ width: '100%' }}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -162,7 +166,7 @@ export default function Details() {
 
                             </Tabs>
                         </Box>
-                        <TabPanel value={value} index={0} >
+                        <TabPanel value={value} index={0}>
                             <Eptools id={id} />
                         </TabPanel>
                         <TabPanel value={value} index={1}>

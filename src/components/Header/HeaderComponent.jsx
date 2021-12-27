@@ -51,7 +51,7 @@ export default function HeaderComponent() {
                         <Route exact path={`${path}/user`} >
                             <Protected Cmp={UserComponent} />
                         </Route>
-                        <Route  path={`${path}/user/:id/eptools`}  >
+                        <Route  path={`${path}/user/:id`}  >
                             <Protected Cmp={Details} />
                         </Route>
                         <Route exact path={`${path}/logout`}>
@@ -59,18 +59,6 @@ export default function HeaderComponent() {
                         </Route>
 
 
-                        {/* <Route exact path={path}>
-                            <Protected Cmp={Dashboard} />
-                        </Route>
-                        <Route exact path={`${path}/user`} >
-                            <Protected Cmp={UserComponent} />
-                        </Route>
-                        <Route exact path={`${path}/user/:id`}  >
-                            <Protected Cmp={Details} />
-                        </Route>
-                        <Route exact path={`${path}/logout`}>
-                            <Protected Cmp={Logout} />
-                        </Route> */}
 
                     </Switch>
                 </Box>
@@ -81,7 +69,3 @@ export default function HeaderComponent() {
         </div>
     )
 }
-{/* <Route exact path={path} component={Dashboard} />
-                        <Route exact path={`${path}/user`} component={UserComponent} />
-                        <Route path={`${path}/user/:id`} component={Details} />
-                        <Route exact path={`${path}/logout`} component={Logout} /> */}

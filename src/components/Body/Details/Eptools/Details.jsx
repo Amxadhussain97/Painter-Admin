@@ -54,6 +54,7 @@ const tableIcons = {
 
 
 export default function Details() {
+    console.log("eptools");
     let { id } = useParams();
     let { path, url } = useRouteMatch();
     const [data, setData] = useState();
