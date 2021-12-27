@@ -93,7 +93,7 @@ export default function Details() {
     let token = localStorage.getItem('token');
     token = token.replace(/^\"(.+)\"$/, "$1");
     useEffect(async () => {
-        let result = await fetch(`http://amaderlab.xyz/api/users/${id}`, {
+        await fetch(`http://amaderlab.xyz/api/users/${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -101,8 +101,16 @@ export default function Details() {
                 "Accept": "application/json"
             },
         })
-        result = await result.json();
-        setUserData(result.user);
+        .then(res => res.json())
+        .then(res => {
+            setUserData(res.user);
+         
+        })
+        .catch(error => {
+        
+
+        })
+       
 
     }, [])
 
@@ -152,7 +160,7 @@ export default function Details() {
 
                             </Tabs>
                         </Box>
-                        <TabPanel value={value} index={0} to={'/Eptools'}>
+                        <TabPanel value={value} index={0} >
                             <Eptools id={id} />
                         </TabPanel>
                         <TabPanel value={value} index={1}>

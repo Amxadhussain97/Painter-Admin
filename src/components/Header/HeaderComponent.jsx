@@ -51,7 +51,7 @@ export default function HeaderComponent() {
                         <Route exact path={`${path}/user`} >
                             <Protected Cmp={UserComponent} />
                         </Route>
-                        <Route  path={`${path}/user/:id`}  >
+                        <Route  path={`${path}/user/:id/eptools`}  >
                             <Protected Cmp={Details} />
                         </Route>
                         <Route exact path={`${path}/logout`}>

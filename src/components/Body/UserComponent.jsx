@@ -169,18 +169,7 @@ export default function UserComponent(props) {
               resolve()
             }, 2000)
           }),
-          // onRowDelete: selectedRow => new Promise((resolve, reject) => {
-          //   const index = selectedRow.tableData.id;
-          //   // console.log(selectedRow.id);
-          //   const updatedRows = [...data]
-          //   updatedRows.splice(index, 1)
-          //   setTimeout(() => {
-
-          //     setData(updatedRows)
-          //     resolve()
-          //   }, 2000)
-          //   resolve()
-          // }),
+    
           onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
             const index = oldRow.tableData.id;
             const updatedRows = [...data]
@@ -273,38 +262,3 @@ export default function UserComponent(props) {
 
 
 }
-
-// .then(res => res.json())
-// .then(res => {
-//   if (res.message != "Success") {
-//     console.log(res.message);
-//     setNotify({
-//       isOpen: true,
-//       message: 'Image Must be less than 2048mb',
-//       type: 'error'
-//     })
-//   }
-//   else {
-//     setNotify({
-//       isOpen: true,
-//       message: 'Inserted Successfully',
-//       type: 'success'
-//     })
-//     setOpenPopup(false);
-//   }
-// })
-// .catch(error => {
-//   setNotify({
-//     isOpen: true,
-//     message: error.message,
-//     type: 'error'
-//   })
-
-
-
-
-
-
-
-
-
