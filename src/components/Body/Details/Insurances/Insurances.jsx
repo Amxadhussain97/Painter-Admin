@@ -120,6 +120,7 @@ export default function Insurances(props) {
 
 
     useEffect(async () => {
+        
         await fetch(`http://amaderlab.xyz/api/insurances?user_id=${id}`, {
             method: "GET",
             headers: {

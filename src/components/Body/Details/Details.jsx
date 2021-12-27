@@ -103,7 +103,9 @@ export default function Details() {
         })
         .then(res => res.json())
         .then(res => {
+            // console.log("aise ",res.user);
             setUserData(res.user);
+            // console.log(userData.name);
          
         })
         .catch(error => {
@@ -134,11 +136,11 @@ export default function Details() {
                         <CardHeader
                             avatar={
                                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                    {userData.name ? userData.name[0] : ""}
+                                    {userData[0].name ? userData[0].name[0] : ""}
                                 </Avatar>
                             }
-                            title={userData.name ? userData.name : ""}
-                            subheader={userData.role ? userData.role : ""}
+                            title={userData[0].name ? userData[0].name : ""}
+                            subheader={userData[0].role ? userData[0].role : ""}
                         />
                     </Card>
                     <Box sx={{ width: '100%' }}>
