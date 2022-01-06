@@ -15,7 +15,7 @@ import Subuser from "./Subuser/Subuser";
 import Linkeduser from "./Linkeduser/Linkeduser";
 import Insurance from "./Insurance/Insurance";
 import { useParams } from "react-router-dom";
-import { Route,Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Protected from "../../Protected";
 import Photos from "./Gallery/Photos";
 const AntTabs = styled(Tabs)({
@@ -29,14 +29,14 @@ const AntTabs = styled(Tabs)({
 const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) => ({
     textTransform: 'none',
     minWidth: 0,
-    
+
     [theme.breakpoints.up('sm')]: {
         minWidth: 0,
     },
     fontWeight: theme.typography.fontWeightRegular,
     marginRight: theme.spacing(1),
     width: 220,
-    indicatorColor:'#fff',
+    indicatorColor: '#fff',
     color: '#08386A',
     fontWeight: 'bold',
     fontFamily: [
@@ -64,7 +64,7 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
     '&.Mui-focusVisible': {
         backgroundColor: '#d1eaff',
     },
-    
+
 }));
 
 
@@ -72,8 +72,8 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
 
 
 const MoreInfo = props => {
-    let { id} = useParams();
-    console.log("id aise ",id);
+    let { id } = useParams();
+    console.log("id aise ", id);
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -101,7 +101,7 @@ const MoreInfo = props => {
         Insurances: 2,
         Galleries: 3,
         Subpainters: 4,
-        inkedDealers:5
+        inkedDealers: 5
     };
 
     const [selectedTab, setSelectedTab] = React.useState(indexToTabName[type]);
@@ -119,24 +119,24 @@ const MoreInfo = props => {
             <Box className={classes.wrapper}>
 
                 <Paper elevation={2} >
-                    <AntTabs    value={selectedTab} onChange={handleChange}>
-                        <AntTab  label="Eptools" />
-                        <AntTab  label="Certificates" />
-                        <AntTab  label="Insurances" />
-                        <AntTab  label="Galleries" />
-                        <AntTab  label="Subpainters" />
-                        <AntTab  label="LinkedDealers" />
+                    <AntTabs variant="scrollable" value={selectedTab} onChange={handleChange}>
+                        <AntTab label="Eptools" />
+                        <AntTab label="Certificates" />
+                        <AntTab label="Insurances" />
+                        <AntTab label="Galleries" />
+                        <AntTab label="Subpainters" />
+                        <AntTab label="LinkedDealers" />
                     </AntTabs>
-                    {selectedTab === 0 && <Eptool/>}
-                    {selectedTab === 1 && <Certificate/>}
-                    {selectedTab === 2 && <Insurance/>}
-                    {selectedTab === 3 && <Gallery/>}
-                    {selectedTab === 4 && <Subuser/>}
-                    {selectedTab === 5 && <Linkeduser/>}
+                    {selectedTab === 0 && <Eptool />}
+                    {selectedTab === 1 && <Certificate />}
+                    {selectedTab === 2 && <Insurance />}
+                    {selectedTab === 3 && <Gallery />}
+                    {selectedTab === 4 && <Subuser />}
+                    {selectedTab === 5 && <Linkeduser />}
                 </Paper>
 
             </Box>
-         
+
         </>
 
     );

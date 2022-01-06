@@ -20,8 +20,7 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center'
     },
     titleIcon: {
-        backgroundColor: 'theme.palette.primary.light',
-        color: theme.palette.primary.main,
+        color: '#007BFF',
         '&:hover': {
             backgroundColor: theme.palette.primary.light,
             cursor: 'default'
@@ -53,14 +52,21 @@ export default function ConfirmDialog(props) {
                 </Typography>
             </DialogContent>
             <DialogActions className={classes.dialogAction}>
-                <Controls.Button
+                {/* <Controls.Button
                     text="No"
                     color="default"
-                    onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })} />
+                    onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })} /> */}
+                <Controls.Button
+                    text="No"
+                    color="#FC5B61"
+                    onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+
+                />
                 <Controls.Button
                     text="Yes"
-                    color="primary"
+                    color="#007BFF"
                     onClick={confirmDialog.onConfirm} />
+
             </DialogActions>
         </Dialog>
     )
