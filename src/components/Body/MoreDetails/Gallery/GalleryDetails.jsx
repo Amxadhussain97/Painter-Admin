@@ -33,7 +33,16 @@ import { ListItemSecondaryAction } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import { useRouteMatch } from 'react-router';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles((theme) => ({
+    icon: {
+       cursor:'pointer',
+      "&:hover": {
+        color: '#007BFF',
+      }
+    }
+}));
 
 
 
@@ -49,8 +58,8 @@ export default function GalleryDetails(props) {
     let token = localStorage.getItem('token');
     token = token.replace(/^\"(.+)\"$/, "$1");
     const [dense, setDense] = useState(false);
-    let { id} = useParams();
-    console.log("gal url ",id);
+    let { id } = useParams();
+    const classes = useStyles();
     const [reload, setReload] = useState(true)
     const [openPopup, setOpenPopup] = useState(false);
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -176,9 +185,9 @@ export default function GalleryDetails(props) {
             <Box maxWidth style={{ position: 'relative ', height: '60px', border: '1px solid #8F8CAE', margin: '10px', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', right: '0px' }}>
                     <Toolbar>
-                        <Button style={{ width: '100px',background:'#007BFF',textTransform:'none' }} variant="contained" startIcon={<AddIcon />}
-                        // className={classes.newButton}
-                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                        <Button style={{ width: '100px', background: '#007BFF', textTransform: 'none' }} variant="contained" startIcon={<AddIcon />}
+                            // className={classes.newButton}
+                            onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
                         >
                             Add
                         </Button>
@@ -202,6 +211,7 @@ export default function GalleryDetails(props) {
 
                                                 <IconButton edge="end" aria-label="delete">
                                                     <DeleteIcon
+                                                    className={classes.icon} 
                                                         onClick={() => {
                                                             setConfirmDialog({
                                                                 isOpen: true,
@@ -219,13 +229,12 @@ export default function GalleryDetails(props) {
                                         >
                                             <ListItemSecondaryAction style={{ marginRight: '30px' }}>
                                                 <IconButton>
-                                                    <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(gallery); }} />
+                                                    <EditIcon className={classes.icon}  onClick={() => { setOpenPopup(true); setRecordForEdit(gallery); }} />
                                                 </IconButton>
                                             </ListItemSecondaryAction>
                                             <NavLink to={`${url}/${gallery.id}/photos`} style={{ display: 'flex', textDecoration: 'none', color: 'Black' }}>
                                                 <ListItemAvatar>
                                                     <Avatar>
-
                                                         <FolderIcon />
                                                     </Avatar>
                                                 </ListItemAvatar>
@@ -257,13 +266,13 @@ export default function GalleryDetails(props) {
                     reload={reload}
                     setOpenPopup={setOpenPopup}
                     recordForEdit={recordForEdit}
-                    
+
                     addOrEdit={addOrEdit} />
             </Popup>
             <ConfirmDialog
-                    confirmDialog={confirmDialog}
-                    setConfirmDialog={setConfirmDialog}
-                />
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+            />
 
         </>
     )

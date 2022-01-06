@@ -206,7 +206,6 @@ export default function Photos() {
       })
         .then(res => res.json())
         .then(res => {
-          console.log("res deko ", res.status);
           if (res.message != "Success") {
 
             setNotify({

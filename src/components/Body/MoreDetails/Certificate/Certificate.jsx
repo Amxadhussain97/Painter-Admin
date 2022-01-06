@@ -20,9 +20,18 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
+import Notification from '../../../controls/Notification'
 
+import { makeStyles } from '@material-ui/core/styles';
 
-
+const useStyles = makeStyles((theme) => ({
+    icon: {
+       cursor:'pointer',
+      "&:hover": {
+        color: '#007BFF',
+      }
+    }
+}));
 
 
 
@@ -36,7 +45,7 @@ async function addOrEdit(certificate, resetForm) {
 export default function Certificate(props) {
     let token = localStorage.getItem('token');
     token = token.replace(/^\"(.+)\"$/, "$1");
-    let { id} = useParams();
+    let { id } = useParams();
     const [reload, setReload] = useState(true)
     const [openPopup, setOpenPopup] = useState(false);
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -48,7 +57,7 @@ export default function Certificate(props) {
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
-
+    const classes = useStyles();
 
 
     useEffect(async () => {
@@ -86,19 +95,19 @@ export default function Certificate(props) {
                 "Authorization": `Bearer ${token}`,
             },
         })
-        .then(() => {
-               
-            setReload(!reload);
-            setNotify({
-                isOpen: true,
-                message: 'Deleted Successfully',
-                type: 'success'
-              })
-        })
-        .catch(error => {
-            console.log("error", error.message);
+            .then(() => {
 
-        })
+                setReload(!reload);
+                setNotify({
+                    isOpen: true,
+                    message: 'Deleted Successfully',
+                    type: 'success'
+                })
+            })
+            .catch(error => {
+                console.log("error", error.message);
+
+            })
     };
 
     async function addOrEdit(certificate, resetForm) {
@@ -114,8 +123,30 @@ export default function Certificate(props) {
                 body: formData
             })
                 .then(res => res.json())
+                .then(res => {
+                    if (res.message != "Updated Successfully") {
+
+                        setNotify({
+                            isOpen: true,
+                            message: res.message,
+                            type: 'error'
+                        })
+                    }
+                    else {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Updated Successfully',
+                            type: 'success'
+                        })
+                        setOpenPopup(false);
+                    }
+                })
                 .catch(error => {
-                    console.log("error", error.message);
+                    setNotify({
+                        isOpen: true,
+                        message: error.message,
+                        type: 'error'
+                    })
 
                 })
 
@@ -131,33 +162,33 @@ export default function Certificate(props) {
                 },
                 body: formData
             })
-            .then(res => res.json())
-            .then(res => {
-              if (res.message != "Success") {
-    
-                setNotify({
-                  isOpen: true,
-                  message: res.message,
-                  type: 'error'
+                .then(res => res.json())
+                .then(res => {
+                    if (res.message != "Success") {
+
+                        setNotify({
+                            isOpen: true,
+                            message: res.message,
+                            type: 'error'
+                        })
+                    }
+                    else {
+                        setNotify({
+                            isOpen: true,
+                            message: 'Inserted Successfully',
+                            type: 'success'
+                        })
+                        setOpenPopup(false);
+                    }
                 })
-              }
-              else {
-                setNotify({
-                  isOpen: true,
-                  message: 'Inserted Successfully',
-                  type: 'success'
+                .catch(error => {
+                    setNotify({
+                        isOpen: true,
+                        message: error.message,
+                        type: 'error'
+                    })
+
                 })
-                setOpenPopup(false);
-              }
-            })
-            .catch(error => {
-              setNotify({
-                isOpen: true,
-                message: error.message,
-                type: 'error'
-              })
-    
-            })
         }
         setReload(!reload);
         setRecordForEdit(null);
@@ -175,9 +206,9 @@ export default function Certificate(props) {
             <Box maxWidth style={{ position: 'relative ', height: '60px', border: '1px solid #8F8CAE', margin: '10px', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', right: '0px' }}>
                     <Toolbar>
-                        <Button style={{ width: '100px',background:'#007BFF',textTransform:'none' }} variant="contained" startIcon={<AddIcon />}
-                        // className={classes.newButton}
-                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                        <Button style={{ width: '100px', background: '#007BFF', textTransform: 'none' }} variant="contained" startIcon={<AddIcon />}
+                            // className={classes.newButton}
+                            onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
                         >
                             Add
                         </Button>
@@ -194,7 +225,7 @@ export default function Certificate(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    
+
                         {userCertificates && userCertificates.map((row) => (
                             <TableRow key={row.name}>
                                 <TableCell component="th" >
@@ -204,16 +235,16 @@ export default function Certificate(props) {
                                     </div>
                                 </TableCell>
                                 <TableCell align="right">
-                                    <CloudDownloadIcon onClick={() => window.location.replace(`http://amaderlab.xyz/${row.file_id}`)} style={{cursor:'pointer'}} sx={{ mr: 2 }} />
-                                    <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(row); }}  style={{cursor:'pointer'}}  sx={{ mr: 2 }} />
+                                    <CloudDownloadIcon onClick={() => window.location.replace(`http://amaderlab.xyz/${row.file_id}`)} className={classes.icon}  sx={{ mr: 2 }} />
+                                    <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(row); }} className={classes.icon}  sx={{ mr: 2 }} />
                                     <DeleteIcon onClick={() => {
-                                                            setConfirmDialog({
-                                                                isOpen: true,
-                                                                title: 'Are you sure to delete this record?',
-                                                                subTitle: "You can't undo this operation",
-                                                                onConfirm: () => { deleteCertificate(row.id); }
-                                                            })
-                                                        }} style={{cursor:'pointer'}}  />
+                                        setConfirmDialog({
+                                            isOpen: true,
+                                            title: 'Are you sure to delete this record?',
+                                            subTitle: "You can't undo this operation",
+                                            onConfirm: () => { deleteCertificate(row.id); }
+                                        })
+                                    }} className={classes.icon}  />
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -229,13 +260,17 @@ export default function Certificate(props) {
                     reload={reload}
                     setOpenPopup={setOpenPopup}
                     recordForEdit={recordForEdit}
-                    
+
                     addOrEdit={addOrEdit} />
             </Popup>
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
             <ConfirmDialog
-                    confirmDialog={confirmDialog}
-                    setConfirmDialog={setConfirmDialog}
-                />
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+            />
 
         </>
     )
