@@ -134,6 +134,7 @@ export default function EptoolDetails() {
                             })
                         setTimeout(() => {
 
+
                             resolve()
                         }, 1000)
 
