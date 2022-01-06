@@ -31,7 +31,7 @@ const tableIcons = {
     Add: forwardRef((props, ref) => <AddIcon  {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
     Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline style={{marginRight:'-5px'}} {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline style={{ marginRight: '-5px' }} {...props} ref={ref} />),
     DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
     Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
     Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
@@ -49,7 +49,7 @@ const tableIcons = {
 
 export default function EptoolDetails() {
     let history = useHistory();
-    let { id} = useParams();
+    let { id } = useParams();
     let { path, url } = useRouteMatch();
     const [data, setData] = useState();
     const [reload, setReload] = useState(true);
@@ -88,7 +88,7 @@ export default function EptoolDetails() {
         {
             title: 'MoreInfo',
             render: rowData => {
-                return <NavLink  to={`${url}/${rowData.id}/photos`}><MoreIcon /></NavLink>
+                return <NavLink to={`${url}/${rowData.id}/photos`}><MoreIcon /></NavLink>
                 //  <Box sx={{ ml: 3 }} style={{}} onClick={() => console.log(rowData.id)}> <MoreIcon /> </Box>
             }
         },
@@ -120,16 +120,7 @@ export default function EptoolDetails() {
                             body: JSON.stringify(newRow)
                         })
                             .then(() => {
-                                setTimeout(() => {
-                                    setReload(!reload);
-                                    resolve()
-                                    setNotify({
-                                        isOpen: true,
-                                        message: 'Inserted Successfully',
-                                        type: 'success'
-                                    })
-
-                                }, 2000)
+                                setReload(!reload);
 
 
                             })
@@ -141,7 +132,11 @@ export default function EptoolDetails() {
                                 })
 
                             })
-                        setReload(!reload);
+                        setTimeout(() => {
+
+                            resolve()
+                        }, 1000)
+
 
 
                     }),
@@ -233,9 +228,9 @@ export default function EptoolDetails() {
                         fontWeight: 600,
                         fontSize: '14px',
                         color: '#313F5E',
-                        height:'50px',
-                       margin:'0 auto',
-                       textAlign:'center'
+                        height: '50px',
+                        margin: '0 auto',
+                        textAlign: 'center'
 
 
 
@@ -248,8 +243,8 @@ export default function EptoolDetails() {
                         lineHeight: '24px',
                         padding: '15px',
                         borderRadius: '5px',
-              
-              
+
+
 
 
 
