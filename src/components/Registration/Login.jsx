@@ -66,7 +66,7 @@ const Login = () => {
                 .then(data => {
                     if (data.message == 'success') {
                         localStorage.setItem("token", JSON.stringify(data.token));
-                        history.push("/home/user");
+                        history.push("/home/personalinfo");
                     }
                     else {
                         setFetcherror(data.message);

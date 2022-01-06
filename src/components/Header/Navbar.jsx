@@ -10,13 +10,33 @@ import { red } from '@mui/material/colors';
 import Profile from './Navtabs/Profile';
 import { Hidden } from '@mui/material';
 import { useHistory } from "react-router-dom";
+import { styled } from '@mui/material/styles';
 
+const BootstrapButton = styled(Button)({
 
-export default function Navbar({ handleDrawerToggle={handleDrawerToggle}}) {
+    textTransform: 'none',
+    fontSize: 16,
+    padding: '6px 12px',
+    lineHeight: 1.5,
+    color:'white',
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  });
+
+export default function Navbar({ handleDrawerToggle = { handleDrawerToggle } }) {
 
     let history = useHistory();
-    function logOut()
-    {
+    function logOut() {
         localStorage.clear();
         history.push('/login');
 
@@ -24,27 +44,28 @@ export default function Navbar({ handleDrawerToggle={handleDrawerToggle}}) {
     return (
         <div >
             <AppBar position="fixed" >
-                <Toolbar style={{background:"#2b475e",fontSize:"1rem"}}>
-                    
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1,ml:7 }}>
-                        ADMIN
+                <Toolbar style={{ background: "#007BFF", fontSize: "0.5rem",height:'40px'}}>
+
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: 7 }}>
+
                     </Typography>
-                    <Button onClick={logOut} color="inherit" sx={{ mr: 4 }} >Logout</Button>
-                    <Hidden mdDown>  
-                    
-                    <Profile/>
+
+                    <BootstrapButton onClick={logOut} >Log Out</BootstrapButton>
+                    <Hidden mdDown>
+
+                        <Profile />
                     </Hidden>
-                    <Hidden mdUp>  
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                        onClick={handleDrawerToggle}
-                    >
-                    <MenuIcon />
-                    </IconButton>
+                    <Hidden mdUp>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{ mr: 2 }}
+                            onClick={handleDrawerToggle}
+                        >
+                            <MenuIcon />
+                        </IconButton>
                     </Hidden>
                 </Toolbar>
             </AppBar>

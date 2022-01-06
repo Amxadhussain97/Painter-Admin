@@ -100,7 +100,7 @@ const Signup = () => {
                     }
                     else {
                         localStorage.setItem("token", JSON.stringify(data.token));
-                        history.push("/home/user");
+                        history.push("/home/personalinfo");
                     }
                 })
                 .catch(error => {

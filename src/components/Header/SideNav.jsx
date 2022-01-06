@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import SideNavData from './SideNavData';
 import { useRouteMatch } from 'react-router';
 
-const drawerWidth = 170;
+const drawerWidth = 80;
 
 export default function SideNav(props) {
     // handleDrawerToggle= props.handleDrawerToggle;

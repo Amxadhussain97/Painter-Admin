@@ -16,22 +16,16 @@ export const useStyles = makeStyles((theme) => ({
     //sideNav
     drawer: {
         width: "230px",
-        marginTop: "65px",
+        marginTop: "80px",
         fontSize:"1rem",
+        borderRadius:'10px',
         [theme.breakpoints.down("xs")]:{
             marginTop: "0px",
         }
 
     },
     navlinks: {
-        color: blueGrey["A400"],
-        "& :hover, &:hover div": {
-            color: "#2b475e",
-        },
-        " & div": {
-            color: blueGrey["A400"],
-        },
-        textTransform:'capitalize',
+      
 
     },
     activeclasslinks: {
@@ -51,9 +45,9 @@ export const useStyles = makeStyles((theme) => ({
     wrapper: {
         // marginTop:'10px',
         height:"100vh",
-        background:"#efefef",
+        background:"#ffffff",
         fontSize:"1rem",
-        padding: theme.spacing(9,2, 0, 22),//1 means 8 pixel top,right,bottom,left
+        padding: theme.spacing(10,2, 0, 11),//1 means 8 pixel top,right,bottom,left
         [theme.breakpoints.down("sm")]:{
             padding: theme.spacing(2,2),
             marginTop:'60px',
