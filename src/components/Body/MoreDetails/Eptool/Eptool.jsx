@@ -13,7 +13,7 @@ import EptoolDetails from './EptoolDetails';
 import EpPhoto from './EpPhoto';
 
 
-export default function Eptool() {
+export default function Eptool(props) {
     let { path, url } = useRouteMatch();
     return (
         <div>

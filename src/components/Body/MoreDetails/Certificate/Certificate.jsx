@@ -202,7 +202,7 @@ export default function Certificate(props) {
 
     return (
         <>
-            <h4 style={{ color: '#007BFF', marginLeft: '14px' }}>User ID 01</h4>
+            <h4 style={{ color: '#007BFF', marginLeft: '14px' }}>User ID {props.userId}</h4>
             <Box maxWidth style={{ position: 'relative ', height: '60px', border: '1px solid #8F8CAE', margin: '10px', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', right: '0px' }}>
                     <Toolbar>

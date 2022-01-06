@@ -73,7 +73,7 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
 
 const MoreInfo = props => {
     let { id } = useParams();
-    console.log("id aise ", id);
+    let userId = id;
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -127,12 +127,12 @@ const MoreInfo = props => {
                         <AntTab label="Subpainters" />
                         <AntTab label="LinkedDealers" />
                     </AntTabs>
-                    {selectedTab === 0 && <Eptool />}
-                    {selectedTab === 1 && <Certificate />}
-                    {selectedTab === 2 && <Insurance />}
-                    {selectedTab === 3 && <Gallery />}
-                    {selectedTab === 4 && <Subuser />}
-                    {selectedTab === 5 && <Linkeduser />}
+                    {selectedTab === 0 && <Eptool userId={userId} />}
+                    {selectedTab === 1 && <Certificate userId={userId} />}
+                    {selectedTab === 2 && <Insurance userId={userId} />}
+                    {selectedTab === 3 && <Gallery userId={userId} />}
+                    {selectedTab === 4 && <Subuser userId={userId} />}
+                    {selectedTab === 5 && <Linkeduser userId={userId} />}
                 </Paper>
 
             </Box>

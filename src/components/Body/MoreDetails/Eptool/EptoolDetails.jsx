@@ -99,7 +99,7 @@ export default function EptoolDetails() {
 
             <MaterialTable
                 style={{ paddingLeft: '5px', fontFamily: 'Open Sans', color: '#007BFF', fontWeight: 'bold' }}
-                title="User 01"
+                title={`User ID ${id}`}
                 data={data}
                 columns={columns}
                 icons={tableIcons}

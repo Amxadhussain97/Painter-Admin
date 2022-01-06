@@ -21,12 +21,11 @@ import { useRouteMatch } from 'react-router';
 export default function Gallery() {
 
     let { path, url } = useRouteMatch();
-    console.log("gallery aise ",url);
     return (
         <div>
-          
 
-       
+
+
             <Switch>
                 <Route exact path={`${path}`}>
                     <Protected Cmp={GalleryDetails} />
@@ -41,5 +40,3 @@ export default function Gallery() {
     )
 }
 
-{/* <Route exact path={`${path}/Galleries`} component={Details} />
-<Route exact path={`${path}/Galleries/:galleryid`} component={Photos} /> */}
