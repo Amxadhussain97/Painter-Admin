@@ -101,9 +101,16 @@ export default function BuisnessInfo() {
 
             ),
             render: rowData => {
-                return <img src={`https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500`} alt="" height="40" width="40" style={{
-                    borderRadius: '50%'
-                }} onClick={() => console.log("okkk")} />
+                if (rowData.imagePath) {
+                    return <img src={`http://amaderlab.xyz/${rowData.imagePath}`} alt="" height="40" width="40" style={{
+                        borderRadius: '50%'
+                    }} onClick={() => console.log("okkk")} />
+                }
+                else {
+                    return <img src={`https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`} alt="" height="40" width="40" style={{
+                        borderRadius: '50%'
+                    }} onClick={() => console.log("okkk")} />
+                }
             }
         },
         { title: "ID", field: "id", editable: false },
