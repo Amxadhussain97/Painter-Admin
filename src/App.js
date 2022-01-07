@@ -43,8 +43,8 @@ function App() {
       <ThemeProvider theme={theme}>
 
         <Switch>
-          <Redirect exact from="/home" to="/home/personalinfo" />
-          <Route exact path="/home/:page" render={props => <Info {...props} />} />
+          <Redirect exact from="/home" to="/home/info/personalinfo" />
+          <Route exact path="/home/info/:page" render={props => <Info {...props} />} />
           <Route path="/home/moreinfo/:id/:type" render={props => <MoreInfo {...props} />} />
 
           {/* <Route exact path={`/home/moreinfo/:id/Galleries`}>

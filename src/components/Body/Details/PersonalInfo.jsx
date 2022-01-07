@@ -145,7 +145,7 @@ export default function PersonaIInfo() {
 
             ),
             render: rowData => {
-                return <NavLink style={{ cursor: 'pointer' }} to={`moreinfo/${rowData.id}/Eptools`}><MoreIcon /></NavLink>
+                return <NavLink style={{ cursor: 'pointer' }} to={`/home/moreinfo/${rowData.id}/Eptools`}><MoreIcon /></NavLink>
                 //  <Box sx={{ ml: 3 }} style={{}} onClick={() => console.log(rowData.id)}> <MoreIcon /> </Box>
             }
         },

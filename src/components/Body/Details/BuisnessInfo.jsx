@@ -140,8 +140,8 @@ export default function BuisnessInfo() {
 
             ),
             render: rowData => {
-                return  <NavLink style={{ cursor: 'pointer' }} to={`moreinfo/${rowData.id}/Eptools`}><MoreIcon/></NavLink> 
-           }
+                return <NavLink style={{ cursor: 'pointer' }} to={`/home/moreinfo/${rowData.id}/Eptools`}><MoreIcon /></NavLink>
+            }
         },
     ]
 
