@@ -44,6 +44,7 @@ function App() {
 
         <Switch>
           <Redirect exact from="/home" to="/home/info/personalinfo" />
+          <Redirect exact from="/home/info" to="/home/info/personalinfo" />
           <Route exact path="/home/info/:page" render={props => <Info {...props} />} />
           <Route path="/home/moreinfo/:id/:type" render={props => <MoreInfo {...props} />} />
 
