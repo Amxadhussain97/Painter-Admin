@@ -8,6 +8,8 @@ import { useStyles } from "../../Header/HeaderStyle";
 import { styled } from '@mui/material/styles';
 import { Box } from "@mui/material/node_modules/@mui/system";
 import { Paper } from "@material-ui/core";
+import jwt_decode from "jwt-decode";
+import { useEffect } from "react";
 
 const AntTabs = styled(Tabs)({
     borderBottom: '1px solid #e8e8e8',
@@ -20,14 +22,14 @@ const AntTabs = styled(Tabs)({
 const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) => ({
     textTransform: 'none',
     minWidth: 0,
-    
+
     [theme.breakpoints.up('sm')]: {
         minWidth: 0,
     },
     fontWeight: theme.typography.fontWeightRegular,
     marginRight: theme.spacing(1),
     width: 220,
-    indicatorColor:'#fff',
+    indicatorColor: '#fff',
     color: '#08386A',
     fontWeight: 'bold',
     fontFamily: [
@@ -55,7 +57,7 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
     '&.Mui-focusVisible': {
         backgroundColor: '#d1eaff',
     },
-    
+
 }));
 
 
@@ -64,8 +66,14 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
 
 const Info = props => {
 
+
+
+    
+
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
+
 
     const handleDrawerToggle = ({ props }) => {
         setMobileOpen(!mobileOpen);
@@ -75,6 +83,24 @@ const Info = props => {
     const { match, history } = props;
     const { params } = match;
     const { page } = params;
+
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            let token = localStorage.getItem('token');
+            const {
+                exp
+            } = jwt_decode(token)
+
+            const expirationTime = (exp * 1000) - 60000
+            if (Date.now() >= expirationTime) {
+                localStorage.removeItem('token');
+                history.push("/login");
+
+            }
+        }
+        else history.push("/login");
+    });
 
     const tabNameToIndex = {
         0: "personalinfo",
@@ -89,7 +115,7 @@ const Info = props => {
     const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page]);
 
     const handleChange = (event, newValue) => {
-        history.push(`/home/${tabNameToIndex[newValue]}`);
+        history.push(`/home/info/${tabNameToIndex[newValue]}`);
         setSelectedTab(newValue);
     };
 
@@ -101,9 +127,9 @@ const Info = props => {
             <Box className={classes.wrapper}>
 
                 <Paper elevation={2} >
-                    <AntTabs    value={selectedTab} onChange={handleChange}>
-                        <AntTab  label="Personal Info" />
-                        <AntTab  label="Buisness Info" />
+                    <AntTabs value={selectedTab} onChange={handleChange}>
+                        <AntTab label="Personal Info" />
+                        <AntTab label="Buisness Info" />
                     </AntTabs>
                     {selectedTab === 0 && <PersonaIInfo />}
                     {selectedTab === 1 && <BuisnessInfo />}

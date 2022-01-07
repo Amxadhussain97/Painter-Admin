@@ -25,7 +25,7 @@ export default function Protected(props) {
     });
     return (
         <>
-            <Cmp />
+            <Cmp  />
         </>
     )
 }

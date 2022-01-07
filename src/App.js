@@ -47,16 +47,6 @@ function App() {
           <Redirect exact from="/home/info" to="/home/info/personalinfo" />
           <Route exact path="/home/info/:page" render={props => <Info {...props} />} />
           <Route path="/home/moreinfo/:id/:type" render={props => <MoreInfo {...props} />} />
-
-          {/* <Route exact path={`/home/moreinfo/:id/Galleries`}>
-            <Protected Cmp={Gallery} />
-          </Route> */}
-          {/* <Route exact path="/home/moreinfo/:id/Galleries/:galleryid/photos" render={props => <Photos{...props} />} /> */}
-          {/* <Route exact path={`/home/moreinfo/:id/Galleries/:galleryid/photos`}>
-            <Protected Cmp={Photos} />
-          </Route> */}
-
-
           <Route path="/login">
             <Login />
           </Route>

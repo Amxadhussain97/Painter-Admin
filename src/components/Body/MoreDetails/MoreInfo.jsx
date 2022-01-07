@@ -18,6 +18,10 @@ import { useParams } from "react-router-dom";
 import { Route, Switch } from "react-router-dom";
 import Protected from "../../Protected";
 import Photos from "./Gallery/Photos";
+import jwt_decode from "jwt-decode";
+import { useEffect } from "react";
+
+
 const AntTabs = styled(Tabs)({
     borderBottom: '1px solid #e8e8e8',
     '& .MuiTabs-indicator': {
@@ -85,6 +89,24 @@ const MoreInfo = props => {
     const { match, history } = props;
     const { params } = match;
     const { type } = params;
+
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            let token = localStorage.getItem('token');
+            const {
+                exp
+            } = jwt_decode(token)
+
+            const expirationTime = (exp * 1000) - 60000
+            if (Date.now() >= expirationTime) {
+                localStorage.removeItem('token');
+                history.push("/login");
+
+            }
+        }
+        else history.push("/login");
+    });
 
     const tabNameToIndex = {
         0: "Eptools",
