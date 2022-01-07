@@ -15,11 +15,7 @@ import { NavLink, useHistory } from "react-router-dom";
 const Signup = () => {
 
     let history = useHistory();
-    useEffect(() => {
-        if (localStorage.getItem('user-info')) {
-            history.push("/home");
-        }
-    }, []);
+
 
     const paperStyle = { padding: '30px 20px', width: 450, margin: "80px auto" }
     const headerStyle = { margin: 10 }
@@ -29,8 +25,8 @@ const Signup = () => {
 
 
     const initialFValues = {
-        name:'',
-        phone:'',
+        name: '',
+        phone: '',
         email: '',
         password: '',
         confirmpassword: '',
@@ -41,7 +37,7 @@ const Signup = () => {
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if ('name' in fieldValues)
-        temp.name = fieldValues.name.length > 0 ? "" : "Enter a Name"
+            temp.name = fieldValues.name.length > 0 ? "" : "Enter a Name"
         if ('email' in fieldValues)
             temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
         if ('phone' in fieldValues)
@@ -80,7 +76,7 @@ const Signup = () => {
         e.preventDefault();
         if (validate()) {
             setFetcherror();
-            let item = Object.assign({}, {  name: values.name, phone: values.phone, email: values.email, password: values.password, role: 'Admin' });
+            let item = Object.assign({}, { name: values.name, phone: values.phone, email: values.email, password: values.password, role: 'Admin' });
 
             await fetch("http://amaderlab.xyz/api/register", {
                 method: "POST",
@@ -100,7 +96,7 @@ const Signup = () => {
                     }
                     else {
                         localStorage.setItem("token", JSON.stringify(data.token));
-                        history.push("/home/personalinfo");
+                        history.push("/home/info/personalinfo");
                     }
                 })
                 .catch(error => {
