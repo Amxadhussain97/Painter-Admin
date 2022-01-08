@@ -159,7 +159,6 @@ export default function EpPhoto() {
       })
       .then(res => res.json())
       .then(res => {
-        console.log("update ", res.message);
         if (res.message != "success") {
 
           setNotify({

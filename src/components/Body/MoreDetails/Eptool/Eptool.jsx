@@ -11,6 +11,7 @@ import {
 import { useRouteMatch } from 'react-router';
 import EptoolDetails from './EptoolDetails';
 import EpPhoto from './EpPhoto';
+import NotFound from '../../../NotFound';
 
 
 export default function Eptool(props) {
@@ -24,6 +25,7 @@ export default function Eptool(props) {
                 <Route exact path={`${path}/:eptoolId/photos`}>
                     <Protected Cmp={EpPhoto} />
                 </Route>
+                <Route component={NotFound} />
             </Switch>
 
 

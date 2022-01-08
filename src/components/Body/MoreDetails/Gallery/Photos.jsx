@@ -164,7 +164,6 @@ export default function Photos() {
       })
       .then(res => res.json())
       .then(res => {
-        console.log("update ", res.message);
         if (res.message != "success") {
 
           setNotify({

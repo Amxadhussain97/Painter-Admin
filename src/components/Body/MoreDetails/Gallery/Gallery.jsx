@@ -16,6 +16,7 @@ import {
 
 } from "react-router-dom";
 import { useRouteMatch } from 'react-router';
+import NotFound from '../../../NotFound';
 
 
 export default function Gallery() {
@@ -33,6 +34,7 @@ export default function Gallery() {
                 <Route exact path={`${path}/:galleryid/photos`}>
                     <Protected Cmp={Photos} />
                 </Route>
+                <Route component={NotFound} />
             </Switch>
 
 
