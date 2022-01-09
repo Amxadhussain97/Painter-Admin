@@ -87,6 +87,7 @@ export default function BuisnessInfo() {
     }, [reload,baseUrl])
 
 
+    
 
     const columns = [
         {
