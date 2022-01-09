@@ -24,6 +24,9 @@ import AddIcon from '../../SVG/AddIcon';
 import UpdateIcon from '../../SVG/UpdateIcon';
 import MoreIcon from '../../SVG/MoreIcon';
 import { Box, Typography } from '@material-ui/core';
+import { useLocation } from "react-router-dom";
+
+
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddIcon  {...props} ref={ref} />),
@@ -46,6 +49,12 @@ const tableIcons = {
 };
 
 export default function BuisnessInfo() {
+    const search = useLocation().search;
+    const user = new URLSearchParams(search).get('user');
+    let baseUrl = '';
+    if (user) baseUrl = `http://amaderlab.xyz/api/users?user=${user}`;
+    else baseUrl = `http://amaderlab.xyz/api/users`;
+
     let history = useHistory();
     let { path, url } = useRouteMatch();
     const [data, setData] = useState();
@@ -57,7 +66,7 @@ export default function BuisnessInfo() {
 
     useEffect(async () => {
 
-        await fetch("http://amaderlab.xyz/api/users", {
+        await fetch(baseUrl, {
 
             method: "GET",
             headers: {
@@ -72,15 +81,10 @@ export default function BuisnessInfo() {
             })
             .catch(error => {
 
-                // setFetcherror(error.message);
-                // const timer = setTimeout(() => {
-                //     setFetcherror();
-                // }, 2300);
-
             })
 
 
-    }, [reload])
+    }, [reload,baseUrl])
 
 
 

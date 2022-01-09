@@ -10,6 +10,8 @@ import { Box } from "@mui/material/node_modules/@mui/system";
 import { Paper } from "@material-ui/core";
 import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 
 const AntTabs = styled(Tabs)({
     borderBottom: '1px solid #e8e8e8',
@@ -66,9 +68,9 @@ const AntTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) =
 
 const Info = props => {
 
+    const search = useLocation().search;
+    const user = new URLSearchParams(search).get('user');
 
-
-    
 
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -115,7 +117,8 @@ const Info = props => {
     const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page]);
 
     const handleChange = (event, newValue) => {
-        history.push(`/home/info/${tabNameToIndex[newValue]}`);
+        user?history.push(`/home/info/${tabNameToIndex[newValue]}?user=${user}`):history.push(`/home/info/${tabNameToIndex[newValue]}`);
+        
         setSelectedTab(newValue);
     };
 

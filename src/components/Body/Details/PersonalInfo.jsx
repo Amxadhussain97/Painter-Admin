@@ -25,6 +25,8 @@ import AddIcon from '../../SVG/AddIcon';
 import UpdateIcon from '../../SVG/UpdateIcon';
 import MoreIcon from '../../SVG/MoreIcon';
 import { Box, Typography } from '@material-ui/core';
+import { useLocation } from "react-router-dom";
+
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddIcon  {...props} ref={ref} />),
@@ -47,6 +49,12 @@ const tableIcons = {
 };
 
 export default function PersonaIInfo() {
+    const search = useLocation().search;
+    const user = new URLSearchParams(search).get('user');
+    let baseUrl = '';
+    if (user) baseUrl = `http://amaderlab.xyz/api/users?user=${user}`;
+    else baseUrl = `http://amaderlab.xyz/api/users`;
+
     let history = useHistory();
     let { path, url } = useRouteMatch();
     const [data, setData] = useState();
@@ -58,7 +66,7 @@ export default function PersonaIInfo() {
 
     useEffect(async () => {
 
-        await fetch("http://amaderlab.xyz/api/users", {
+        await fetch(baseUrl, {
 
             method: "GET",
             headers: {
@@ -82,7 +90,7 @@ export default function PersonaIInfo() {
             })
 
 
-    }, [reload])
+    }, [reload,baseUrl])
 
 
 
@@ -106,12 +114,12 @@ export default function PersonaIInfo() {
                 if (rowData.imagePath) {
                     return <img src={`http://amaderlab.xyz/${rowData.imagePath}`} alt="" height="40" width="40" style={{
                         borderRadius: '50%'
-                    }} onClick={() => console.log("okkk")} />
+                    }} />
                 }
                 else {
                     return <img src={`https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`} alt="" height="40" width="40" style={{
                         borderRadius: '50%'
-                    }} onClick={() => console.log("okkk")} />
+                    }} />
                 }
             }
         },

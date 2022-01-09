@@ -32,8 +32,7 @@ const theme = createTheme({
   palette: {
 
   },
-
-
+  
 })
 
 function App() {
