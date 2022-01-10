@@ -11,7 +11,8 @@ import { Paper } from "@material-ui/core";
 import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const AntTabs = styled(Tabs)({
     borderBottom: '1px solid #e8e8e8',
@@ -82,9 +83,13 @@ const Info = props => {
 
     };
 
-    const { match, history } = props;
-    const { params } = match;
-    const { page } = params;
+    // const { match, history } = props;
+    // const { params } = match;
+    // const { page } = params;
+    
+    let history = useHistory();
+
+    let { page } = useParams();
 
 
     useEffect(() => {

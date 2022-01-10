@@ -140,6 +140,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Subuser(props) {
+    let { link } = props;
+    if (link === 'SubPainter') link = 'Painter'
+    else link = 'Dealer';
+
     const classes = useStyles();
 
     let { id } = useParams();
@@ -193,7 +197,7 @@ export default function Subuser(props) {
     async function addOrEdit(subuser, resetForm) {
         const formData = new FormData();
         formData.append('phone', subuser.phone);
-        formData.append('link', "Painter");
+        formData.append('link', link);
         if (recordForEdit != null) {
             // await fetch(`http://amaderlab.xyz/api/galleries/${gallery.id}`, {
             //     method: "POST",
@@ -302,7 +306,7 @@ export default function Subuser(props) {
             title: 'MoreInfo',
             render: rowData => {
                 return <NavLink style={{ cursor: 'pointer' }} to={`/home/info/personalinfo?user=${rowData.subuser}`}><MoreIcon /></NavLink>
-             
+
             }
         },
     ]

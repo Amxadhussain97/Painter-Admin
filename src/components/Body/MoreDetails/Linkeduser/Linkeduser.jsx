@@ -141,6 +141,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Linkeduser(props) {
     const classes = useStyles();
+    let { link } = props;
+    if (link === 'LinkedPainter') link = 'Painter'
+    else link = 'Dealer';
+
 
     let { id } = useParams();
     let { path, url } = useRouteMatch();
@@ -193,14 +197,15 @@ export default function Linkeduser(props) {
     async function addOrEdit(linkeduser, resetForm) {
 
         const formData = new FormData();
-        formData.append('name',linkeduser.name);
-        formData.append('area',linkeduser.area);
-        formData.append('phone',linkeduser.phone);
-        formData.append('district',linkeduser.district);
-        formData.append('subdistrict',linkeduser.subdistrict);
-        formData.append('link', "Painter");
+        formData.append('name', linkeduser.name);
+        formData.append('area', linkeduser.area);
+        formData.append('phone', linkeduser.phone);
+        formData.append('district', linkeduser.district);
+        formData.append('subdistrict', linkeduser.subdistrict);
+        formData.append('link', link);
+
         if (recordForEdit != null) {
-          
+
 
         }
 

@@ -20,6 +20,7 @@ import Protected from "../../Protected";
 import Photos from "./Gallery/Photos";
 import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
+import { useLocation } from 'react-router-dom'
 
 
 const AntTabs = styled(Tabs)({
@@ -85,11 +86,23 @@ const MoreInfo = props => {
         setMobileOpen(!mobileOpen);
 
     };
-
+    let location = useLocation()
     const { match, history } = props;
     const { params } = match;
     const { type } = params;
-
+    let role = "Admin";
+    if (location.state === undefined) console.log(location)
+    else role = location.state.role
+    let subuser = "SubUser", linkeduser = "LinkedUser"
+    console.log(role);
+    if (role === 'Painter') {
+        subuser = "SubPainter"
+        linkeduser = "LinkedDealer"
+    }
+    else if (role === 'Dealer') {
+        subuser = "SubDealer"
+        linkeduser = "LinkedPainter"
+    }
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -129,7 +142,10 @@ const MoreInfo = props => {
     const [selectedTab, setSelectedTab] = React.useState(indexToTabName[type]);
 
     const handleChange = (event, newValue) => {
-        history.push(`/home/moreinfo/${id}/${tabNameToIndex[newValue]}`);
+        history.push({
+            pathname: `/home/moreinfo/${id}/${tabNameToIndex[newValue]}`,
+            state: { role: role }
+        });
         setSelectedTab(newValue);
     };
 
@@ -146,15 +162,15 @@ const MoreInfo = props => {
                         <AntTab label="Certificates" />
                         <AntTab label="Insurances" />
                         <AntTab label="Galleries" />
-                        <AntTab label="Subpainters" />
-                        <AntTab label="LinkedDealers" />
+                        <AntTab label={subuser} />
+                        <AntTab label={linkeduser} />
                     </AntTabs>
                     {selectedTab === 0 && <Eptool userId={userId} />}
                     {selectedTab === 1 && <Certificate userId={userId} />}
                     {selectedTab === 2 && <Insurance userId={userId} />}
                     {selectedTab === 3 && <Gallery userId={userId} />}
-                    {selectedTab === 4 && <Subuser userId={userId} />}
-                    {selectedTab === 5 && <Linkeduser userId={userId} />}
+                    {selectedTab === 4 && <Subuser userId={userId} link={subuser}/>}
+                    {selectedTab === 5 && <Linkeduser userId={userId} link={linkeduser}/>}
                 </Paper>
 
             </Box>

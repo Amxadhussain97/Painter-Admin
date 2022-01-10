@@ -90,7 +90,7 @@ export default function PersonaIInfo() {
             })
 
 
-    }, [reload,baseUrl])
+    }, [reload, baseUrl])
 
 
 
@@ -153,8 +153,13 @@ export default function PersonaIInfo() {
 
             ),
             render: rowData => {
-                return <NavLink style={{ cursor: 'pointer' }} to={`/home/moreinfo/${rowData.id}/Eptools`}><MoreIcon /></NavLink>
-                //  <Box sx={{ ml: 3 }} style={{}} onClick={() => console.log(rowData.id)}> <MoreIcon /> </Box>
+                return <NavLink style={{ cursor: 'pointer' }}
+                    to={{
+                        pathname: `/home/moreinfo/${rowData.id}/Eptools`,
+                        state: { role: rowData.role }
+                    }}>
+                    <MoreIcon />
+                </NavLink>
             }
         },
     ]

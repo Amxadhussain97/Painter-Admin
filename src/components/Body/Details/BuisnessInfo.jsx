@@ -84,10 +84,10 @@ export default function BuisnessInfo() {
             })
 
 
-    }, [reload,baseUrl])
+    }, [reload, baseUrl])
 
 
-    
+
 
     const columns = [
         {
@@ -133,19 +133,15 @@ export default function BuisnessInfo() {
         },
         {
             title: 'MoreInfo',
-            editComponent: (props) => (
-                <input
-                    // accept="image/*"
-                    style={{ margin: '10px' }}
-                    id="imagePath"
-                    name="imagePath"
-                    type="file"
-                    onChange={(e) => props.onChange(e.target.files[0])}
-                />
 
-            ),
             render: rowData => {
-                return <NavLink style={{ cursor: 'pointer' }} to={`/home/moreinfo/${rowData.id}/Eptools`}><MoreIcon /></NavLink>
+                return <NavLink style={{ cursor: 'pointer' }}
+                    to={{
+                        pathname: `/home/moreinfo/${rowData.id}/Eptools`,
+                        state: { role: rowData.role }
+                    }}>
+                    <MoreIcon />
+                </NavLink>
             }
         },
     ]
