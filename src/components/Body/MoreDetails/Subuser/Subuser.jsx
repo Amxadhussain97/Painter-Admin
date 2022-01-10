@@ -143,7 +143,6 @@ export default function Subuser(props) {
     const classes = useStyles();
 
     let { id } = useParams();
-    console.log("sub id ", id);
     let { path, url } = useRouteMatch();
     const [data, setData] = useState();
     const [reload, setReload] = useState(true);
@@ -304,8 +303,6 @@ export default function Subuser(props) {
             render: rowData => {
                 return <NavLink style={{ cursor: 'pointer' }} to={`/home/info/personalinfo?user=${rowData.subuser}`}><MoreIcon /></NavLink>
              
-                // return <NavLink style={{ cursor: 'pointer' }} to={`/home/moreinfo/${rowData.subuser}/Eptools`}><MoreIcon /></NavLink>
-     
             }
         },
     ]

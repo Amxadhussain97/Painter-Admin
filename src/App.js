@@ -18,7 +18,6 @@ import MoreInfo from './components/Body/MoreDetails/MoreInfo';
 import Gallery from './components/Body/MoreDetails/Gallery/Gallery';
 import Photos from './components/Body/MoreDetails/Gallery/Photos';
 
-
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -32,7 +31,7 @@ const theme = createTheme({
   palette: {
 
   },
-  
+
 })
 
 function App() {
@@ -40,7 +39,7 @@ function App() {
 
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-
+        {/* <LinkeduserForm /> */}
         <Switch>
           <Redirect exact from="/home" to="/home/info/personalinfo" />
           <Redirect exact from="/home/info" to="/home/info/personalinfo" />
