@@ -183,6 +183,7 @@ export default function Certificate(props) {
                
                 })
         }
+        setRecordForEdit(null);
 
     }
 

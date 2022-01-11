@@ -28,6 +28,9 @@ import Notification from '../../../controls/Notification';
 import { Box } from '@material-ui/core';
 import { Divider } from '@mui/material';
 import Button from '@mui/material/Button';
+import axios from "axios"
+import LinearProgress from '@mui/material/LinearProgress';
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -119,6 +122,7 @@ export default function EpPhoto() {
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+  const [progress, setProgress] = useState(0)
 
   let { path, url } = useRouteMatch();
 
@@ -151,95 +155,78 @@ export default function EpPhoto() {
   async function addOrEdit(photo, resetForm) {
  
     const formData = new FormData();
-
+    formData.append('image_id[]', photo.image_id);
    
+    setOpenPopup(false);
     if (recordForEdit != null) {
-        formData.append('image_id', photo.image_id);
-      await fetch(`http://amaderlab.xyz/api/eptools/${eptoolId}/photos/${photo.id}`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-           "Accept": "application/json"
-        },
-        body: formData
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.message != "success") {
-
-          setNotify({
-            isOpen: true,
-            message: 'Image Must be less than 2048mb',
-            type: 'error'
+      axios
+          .post(`http://amaderlab.xyz/api/eptools/${eptoolId}/photos/${photo.id}`, formData, {
+              headers: {
+                  "Content-Type": "multipart/form-data",
+                  "Authorization": `Bearer ${token}`,
+              },
+              onUploadProgress: data => {
+                  setProgress(Math.round((100 * data.loaded) / data.total));
+              },
           })
-        }
-        else {
-          setNotify({
-            isOpen: true,
-            message: 'Updated Successfully',
-            type: 'success'
+          .then((response) => {
+              setProgress(0);
+              setReload(!reload);
+              setNotify({
+                  isOpen: true,
+                  message: 'Updated Successfully',
+                  type: 'success'
+              })
           })
-          setOpenPopup(false);
-        }
-      })
-      .catch(error => {
-        setNotify({
-          isOpen: true,
-          message: error.message,
-          type: 'error'
-        })
-
-      })
-
-
-    }
-
-    else {
-        formData.append('image_id[]', photo.image_id);
-      await fetch(`http://amaderlab.xyz/api/eptools/${eptoolId}/photos`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Accept": "application/json"
-        },
-        body: formData
-      })
-        .then(res => res.json())
-        .then(res => {
-          console.log("res deko ", res.status);
-          if (res.message != "Success") {
-
-            setNotify({
-              isOpen: true,
-              message: 'Image Must be less than 2048mb',
-              type: 'error'
-            })
-          }
-          else {
-            setNotify({
-              isOpen: true,
-              message: 'Inserted Successfully',
-              type: 'success'
-            })
-            setOpenPopup(false);
-          }
-        })
-        .catch(error => {
-          setNotify({
-            isOpen: true,
-            message: error.message,
-            type: 'error'
+          .catch(error => {
+              setProgress(0);
+              setReload(!reload);
+              setNotify({
+                  isOpen: true,
+                  message: error.response.data.message,
+                  type: 'error'
+              })
+             
           })
-
-        })
-    }
-
-    setReload(!reload);
-    setRecordForEdit(null);
-
 
 
   }
+  else {
+      axios
+          .post(`http://amaderlab.xyz/api/eptools/${eptoolId}/photos`, formData, {
+              headers: {
+                  "Content-Type": "multipart/form-data",
+                  "Authorization": `Bearer ${token}`,
+              },
+              onUploadProgress: data => {
+                  setProgress(Math.round((100 * data.loaded) / data.total));
+              },
+          })
+          .then((response) => {
+              setProgress(0);
+              setReload(!reload);
+              setNotify({
+                  isOpen: true,
+                  message: 'Inserted Successfully',
+                  type: 'success'
+              })
+           
+          })
+          .catch(error => {
+              setProgress(0);
+              setReload(!reload);
+              setNotify({
+                  isOpen: true,
+                  message: error.response.data.message,
+                  type: 'error'
+              })
+         
+          })
+  }
+
+    setRecordForEdit(null);
+
+}
 
 
   async function deletePhoto(photo_id) {
@@ -304,6 +291,8 @@ export default function EpPhoto() {
           </Toolbar>
         </div>
       </Box>
+      {progress > 0 ? <Box sx={{ width: '100%' }}><LinearProgress variant="buffer" value={progress} valueBuffer={0} /></Box> : null}
+
 
 
       {photos ? <Divider /> : null}

@@ -189,7 +189,7 @@ export default function Insurance(props) {
 
 
 
-
+        setRecordForEdit(null);
 
 
 
