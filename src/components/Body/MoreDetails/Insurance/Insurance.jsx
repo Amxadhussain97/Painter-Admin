@@ -22,6 +22,8 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
 import Notification from '../../../controls/Notification'
 import { makeStyles } from '@material-ui/core/styles';
+import axios from "axios"
+import LinearProgress from '@mui/material/LinearProgress';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -57,7 +59,7 @@ export default function Insurance(props) {
     const [records, setRecords] = useState();
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
-
+    const [progress, setProgress] = useState(0)
     const classes = useStyles();
 
 
@@ -117,85 +119,86 @@ export default function Insurance(props) {
         const formData = new FormData();
         formData.append('file_id', insurance.file_id);
         formData.append('name', insurance.name);
+        setOpenPopup(false);
         if (recordForEdit != null) {
-            await fetch(`http://amaderlab.xyz/api/insurances/${insurance.id}`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(res => {
-                if (res.message != "Updated Successfully") {
-
-                    setNotify({
-                        isOpen: true,
-                        message: res.message,
-                        type: 'error'
-                    })
-                }
-                else {
+            axios
+                .post(`http://amaderlab.xyz/api/insurances/${insurance.id}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    onUploadProgress: data => {
+                        setProgress(Math.round((100 * data.loaded) / data.total));
+                    },
+                })
+                .then((response) => {
+                    setProgress(0);
+                    setReload(!reload);
                     setNotify({
                         isOpen: true,
                         message: 'Updated Successfully',
                         type: 'success'
                     })
-                    setOpenPopup(false);
-                }
-            })
-            .catch(error => {
-                setNotify({
-                    isOpen: true,
-                    message: error.message,
-                    type: 'error'
-                })
-
-            })
-
-
-        }
-
-        else {
-
-            await fetch(`http://amaderlab.xyz/api/insurances?user_id=${id}`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: formData
-            })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.message != "Success") {
-
-                        setNotify({
-                            isOpen: true,
-                            message: res.message,
-                            type: 'error'
-                        })
-                    }
-                    else {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Inserted Successfully',
-                            type: 'success'
-                        })
-                        setOpenPopup(false);
-                    }
                 })
                 .catch(error => {
+                    setProgress(0);
+                    setReload(!reload);
                     setNotify({
                         isOpen: true,
-                        message: error.message,
+                        message: error.response.data.message,
                         type: 'error'
                     })
+                   
+                })
 
+
+        }
+        else {
+            axios
+                .post(`http://amaderlab.xyz/api/insurances?user_id=${id}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    onUploadProgress: data => {
+                        setProgress(Math.round((100 * data.loaded) / data.total));
+                    },
+                })
+                .then((response) => {
+                    setProgress(0);
+                    setReload(!reload);
+                    setNotify({
+                        isOpen: true,
+                        message: 'Inserted Successfully',
+                        type: 'success'
+                    })
+                 
+                })
+                .catch(error => {
+                    setProgress(0);
+                    setReload(!reload);
+                    setNotify({
+                        isOpen: true,
+                        message: error.response.data.message,
+                        type: 'error'
+                    })
+               
                 })
         }
-        setReload(!reload);
-        setRecordForEdit(null);
-        setOpenPopup(false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
     }
 
 
@@ -219,6 +222,8 @@ export default function Insurance(props) {
                     </Toolbar>
                 </div>
             </Box>
+            {progress > 0 ? <Box sx={{ width: '100%' }}><LinearProgress variant="buffer" value={progress} valueBuffer={0} /></Box> : null}
+
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="caption table">
                     <TableHead>

@@ -52,6 +52,7 @@ export function CertificateForm(props) {
 
     const fileHandler = (event) => {
         values['file_id'] = event.target.files[0];
+     
     };
 
     const handleSubmit = e => {
@@ -79,7 +80,7 @@ export function CertificateForm(props) {
                 <Grid container>
 
                     <Grid item xs={12} style={{ margin: '8px', marginLeft: '-5px' }}>
-                        <Typography style={{fontWeight:'bold',color:'#70788A',marginLeft:'8px'}} variant="caption" display="block" gutterBottom>
+                        <Typography style={{ fontWeight: 'bold', color: '#70788A', marginLeft: '8px' }} variant="caption" display="block" gutterBottom>
                             Name
                         </Typography>
                         <TextField
@@ -89,7 +90,7 @@ export function CertificateForm(props) {
                             style={{ background: '#F5F5F5' }}
                             onChange={handleInputChange}
                             type="text" variant="outlined" fullWidth required
-                           
+
                             {...(errors.name && { error: true, helperText: errors.name })}
                         />
 

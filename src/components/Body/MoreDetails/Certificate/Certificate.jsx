@@ -21,15 +21,18 @@ import { useParams } from 'react-router-dom';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import ConfirmDialog from '../../../controls/ConfirmDialog';
 import Notification from '../../../controls/Notification'
+import axios from "axios"
+import LinearProgress from '@mui/material/LinearProgress';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
-       cursor:'pointer',
-      "&:hover": {
-        color: '#007BFF',
-      }
+        cursor: 'pointer',
+        "&:hover": {
+            color: '#007BFF',
+        }
     }
 }));
 
@@ -56,6 +59,9 @@ export default function Certificate(props) {
     const [records, setRecords] = useState();
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+    const [progress, setProgress] = useState(0)
+    const [error, setError] = useState()
+
 
     const classes = useStyles();
 
@@ -75,10 +81,6 @@ export default function Certificate(props) {
             })
             .catch(error => {
 
-                // setFetcherror(error.message);
-                // const timer = setTimeout(() => {
-                //     setFetcherror();
-                // }, 2300);
 
             })
 
@@ -114,85 +116,74 @@ export default function Certificate(props) {
         const formData = new FormData();
         formData.append('file_id', certificate.file_id);
         formData.append('name', certificate.name);
-        if (recordForEdit != null) {
-            await fetch(`http://amaderlab.xyz/api/certificates/${certificate.id}`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: formData
-            })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.message != "Updated Successfully") {
-
-                        setNotify({
-                            isOpen: true,
-                            message: res.message,
-                            type: 'error'
-                        })
-                    }
-                    else {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Updated Successfully',
-                            type: 'success'
-                        })
-                        setOpenPopup(false);
-                    }
-                })
-                .catch(error => {
-                    setNotify({
-                        isOpen: true,
-                        message: error.message,
-                        type: 'error'
-                    })
-
-                })
-
-
-        }
-
-        else {
-
-            await fetch(`http://amaderlab.xyz/api/certificates?user_id=${id}`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: formData
-            })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.message != "Success") {
-
-                        setNotify({
-                            isOpen: true,
-                            message: res.message,
-                            type: 'error'
-                        })
-                    }
-                    else {
-                        setNotify({
-                            isOpen: true,
-                            message: 'Inserted Successfully',
-                            type: 'success'
-                        })
-                        setOpenPopup(false);
-                    }
-                })
-                .catch(error => {
-                    setNotify({
-                        isOpen: true,
-                        message: error.message,
-                        type: 'error'
-                    })
-
-                })
-        }
-        setReload(!reload);
-        setRecordForEdit(null);
         setOpenPopup(false);
+
+        if (recordForEdit != null) {
+            axios
+                .post(`http://amaderlab.xyz/api/certificates/${certificate.id}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    onUploadProgress: data => {
+                        setProgress(Math.round((100 * data.loaded) / data.total));
+                    },
+                })
+                .then((response) => {
+                    setProgress(0);
+                    setReload(!reload);
+                    setNotify({
+                        isOpen: true,
+                        message: 'Updated Successfully',
+                        type: 'success'
+                    })
+                })
+                .catch(error => {
+                    setProgress(0);
+                    setReload(!reload);
+                    setNotify({
+                        isOpen: true,
+                        message: error.response.data.message,
+                        type: 'error'
+                    })
+                   
+                })
+
+
+        }
+        else {
+            axios
+                .post(`http://amaderlab.xyz/api/certificates?user_id=${id}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    onUploadProgress: data => {
+                        setProgress(Math.round((100 * data.loaded) / data.total));
+                    },
+                })
+                .then((response) => {
+                    setProgress(0);
+                    setReload(!reload);
+                    setNotify({
+                        isOpen: true,
+                        message: 'Inserted Successfully',
+                        type: 'success'
+                    })
+                 
+                })
+                .catch(error => {
+                    setProgress(0);
+                    setReload(!reload);
+                    setNotify({
+                        isOpen: true,
+                        message: error.response.data.message,
+                        type: 'error'
+                    })
+               
+                })
+        }
+
     }
 
 
@@ -202,6 +193,7 @@ export default function Certificate(props) {
 
     return (
         <>
+        
             <h4 style={{ color: '#007BFF', marginLeft: '14px' }}>User ID {props.userId}</h4>
             <Box maxWidth style={{ position: 'relative ', height: '60px', border: '1px solid #8F8CAE', margin: '10px', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', right: '0px' }}>
@@ -216,6 +208,11 @@ export default function Certificate(props) {
                     </Toolbar>
                 </div>
             </Box>
+
+            {progress > 0 ? <Box sx={{ width: '100%' }}><LinearProgress variant="buffer" value={progress} valueBuffer={0} /></Box> : null}
+
+
+
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="caption table">
                     <TableHead>
@@ -235,8 +232,8 @@ export default function Certificate(props) {
                                     </div>
                                 </TableCell>
                                 <TableCell align="right">
-                                    <CloudDownloadIcon onClick={() => window.location.replace(`http://amaderlab.xyz/${row.file_id}`)} className={classes.icon}  sx={{ mr: 2 }} />
-                                    <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(row); }} className={classes.icon}  sx={{ mr: 2 }} />
+                                    <CloudDownloadIcon onClick={() => window.location.replace(`http://amaderlab.xyz/${row.file_id}`)} className={classes.icon} sx={{ mr: 2 }} />
+                                    <EditIcon onClick={() => { setOpenPopup(true); setRecordForEdit(row); }} className={classes.icon} sx={{ mr: 2 }} />
                                     <DeleteIcon onClick={() => {
                                         setConfirmDialog({
                                             isOpen: true,
@@ -244,7 +241,7 @@ export default function Certificate(props) {
                                             subTitle: "You can't undo this operation",
                                             onConfirm: () => { deleteCertificate(row.id); }
                                         })
-                                    }} className={classes.icon}  />
+                                    }} className={classes.icon} />
                                 </TableCell>
                             </TableRow>
                         ))}

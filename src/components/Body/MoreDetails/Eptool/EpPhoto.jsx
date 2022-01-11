@@ -123,21 +123,27 @@ export default function EpPhoto() {
   let { path, url } = useRouteMatch();
 
   useEffect(async () => {
-    let result = await fetch(`http://amaderlab.xyz/api/eptools/${eptoolId}/photos`, {
+    await fetch(`http://amaderlab.xyz/api/eptools/${eptoolId}/photos`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
+    }) .then(res => res.json())
+    .then(res => {
+      setPhotos(res.photos);
     })
-        .catch(err => {
-            console.log(err.message);
-        })
-    result = await result.json();
+    .catch(error => {
+      setNotify({
+        isOpen: true,
+        message: error.message,
+        type: 'error'
+      })
 
-    setPhotos(result.photos);
-    console.log("galler ", result);
+    })
+
+
 
 
 }, [reload])

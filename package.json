@@ -20,6 +20,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.24.0",
     "jwt-decode": "^3.1.2",
     "material-table": "^1.69.3",
     "pdfjs-dist": "^2.4.456",
@@ -55,5 +56,4 @@
       "last 1 safari version"
     ]
   }
-  
 }

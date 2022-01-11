@@ -91,10 +91,12 @@ const MoreInfo = props => {
     const { params } = match;
     const { type } = params;
     let role = "Admin";
-    if (location.state === undefined) console.log(location)
-    else role = location.state.role
+    
+    if(location.state)  role = location.state.role
+    // if (location.state!== null || location.state!== undefined) role = location.state.role
+
     let subuser = "SubUser", linkeduser = "LinkedUser"
-    console.log(role);
+
     if (role === 'Painter') {
         subuser = "SubPainter"
         linkeduser = "LinkedDealer"
@@ -169,8 +171,8 @@ const MoreInfo = props => {
                     {selectedTab === 1 && <Certificate userId={userId} />}
                     {selectedTab === 2 && <Insurance userId={userId} />}
                     {selectedTab === 3 && <Gallery userId={userId} />}
-                    {selectedTab === 4 && <Subuser userId={userId} link={subuser}/>}
-                    {selectedTab === 5 && <Linkeduser userId={userId} link={linkeduser}/>}
+                    {selectedTab === 4 && <Subuser userId={userId} link={subuser} />}
+                    {selectedTab === 5 && <Linkeduser userId={userId} link={linkeduser} />}
                 </Paper>
 
             </Box>
