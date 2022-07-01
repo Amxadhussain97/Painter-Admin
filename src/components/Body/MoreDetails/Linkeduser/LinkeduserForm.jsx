@@ -39,8 +39,7 @@ export function LinkeduserForm(props) {
     const [district, setDistrict] = useState(null);
     const [subdistrict, setSubDistrict] = useState(null);
     const [rootsubdistrict, setRootSubDistrict] = useState(null);
-    let token = localStorage.getItem('token');
-    token = token.replace(/^\"(.+)\"$/, "$1");
+
 
 
 
@@ -68,6 +67,9 @@ export function LinkeduserForm(props) {
 
 
     useEffect(async () => {
+
+        let token = localStorage.getItem("token");
+
         await fetch(`http://amaderlab.xyz/api/districtsandsubdistricts`, {
             method: "GET",
             headers: {

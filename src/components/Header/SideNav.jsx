@@ -22,11 +22,11 @@ const drawerWidth = 80;
 export default function SideNav(props) {
     // handleDrawerToggle= props.handleDrawerToggle;
     // mobileOpen = props.mobileOpen;
-    const { window,mobileOpen,handleDrawerToggle } = props;
+    const { window, mobileOpen, handleDrawerToggle } = props;
     // let { path, url } = useRouteMatch();
     // console.log(`${url}`);
     const classes = useStyles();
-   
+
 
 
 
@@ -35,12 +35,11 @@ export default function SideNav(props) {
 
     return (
         <Box
-       
+
             component="nav"
             sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
             aria-label="mailbox folders"
         >
-            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
             <Drawer
                 variant="temporary"
                 open={mobileOpen}
@@ -56,21 +55,21 @@ export default function SideNav(props) {
                     paper: classes.drawer,
                 }}
             >
-                <SideNavData handleDrawerToggle={handleDrawerToggle}/>
+                <SideNavData handleDrawerToggle={handleDrawerToggle} />
             </Drawer>
 
             <Drawer
                 variant="permanent"
                 sx={{
-                    display: { xs:'none', sm: 'none', md: 'block' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth},
+                    display: { xs: 'none', sm: 'none', md: 'block' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                 }}
                 classes={{
                     paper: classes.drawer,
                 }}
                 open
             >
-             <SideNavData/>
+                <SideNavData />
             </Drawer>
         </Box>
     )

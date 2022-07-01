@@ -128,8 +128,8 @@ const MoreInfo = props => {
         1: "Certificates",
         2: "Insurances",
         3: "Galleries",
-        4: "Subpainters",
-        5: "LinkedDealers",
+        4: "SubUser",
+        5: "LinkedUser",
     };
 
     const indexToTabName = {
@@ -137,11 +137,19 @@ const MoreInfo = props => {
         Certificates: 1,
         Insurances: 2,
         Galleries: 3,
-        Subpainters: 4,
-        inkedDealers: 5
+        SubUser:4,
+        LinkedUser:5,
     };
 
     const [selectedTab, setSelectedTab] = React.useState(indexToTabName[type]);
+
+
+    useEffect(()=>{
+      setSelectedTab(indexToTabName[type])
+    },[type])
+
+
+
 
     const handleChange = (event, newValue) => {
         history.push({
@@ -164,15 +172,15 @@ const MoreInfo = props => {
                         <AntTab label="Certificates" />
                         <AntTab label="Insurances" />
                         <AntTab label="Galleries" />
-                        <AntTab label={subuser} />
+                        <AntTab label={subuser}/>
                         <AntTab label={linkeduser} />
                     </AntTabs>
                     {selectedTab === 0 && <Eptool userId={userId} />}
                     {selectedTab === 1 && <Certificate userId={userId} />}
                     {selectedTab === 2 && <Insurance userId={userId} />}
                     {selectedTab === 3 && <Gallery userId={userId} />}
-                    {selectedTab === 4 && <Subuser userId={userId} link={subuser} />}
-                    {selectedTab === 5 && <Linkeduser userId={userId} link={linkeduser} />}
+                    {selectedTab === 4 && <Subuser userId={userId} />}
+                    {selectedTab === 5 && <Linkeduser userId={userId}/>}
                 </Paper>
 
             </Box>

@@ -8,6 +8,7 @@ export default function Protected(props) {
     let Cmp = props.Cmp;
     let history = useHistory();
     useEffect(() => {
+      
         if (localStorage.getItem('token')) {
             let token = localStorage.getItem('token');
             const {

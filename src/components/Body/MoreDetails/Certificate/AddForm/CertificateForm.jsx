@@ -58,7 +58,6 @@ export function CertificateForm(props) {
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            console.log("validated ");
             addOrEdit(values, resetForm);
         }
 

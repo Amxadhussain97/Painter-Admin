@@ -64,7 +64,8 @@ const Login = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.message == 'success') {
+                    //check status code 
+                    if (data?.token) {
                         localStorage.setItem("token", JSON.stringify(data.token));
                         history.push("/home/info/personalinfo");
                     }
