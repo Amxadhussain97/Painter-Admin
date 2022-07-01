@@ -21,6 +21,7 @@ import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { useHistory, NavLink } from "react-router-dom";
 import { useRouteMatch } from "react-router";
 import AddIcon from "../../SVG/AddIcon";
+import axios from "axios";
 import UpdateIcon from "../../SVG/UpdateIcon";
 import MoreIcon from "../../SVG/MoreIcon";
 import { Box, Typography } from "@material-ui/core";
@@ -74,36 +75,9 @@ export default function PersonaIInfo() {
   });
 
   const [district, setDistrict] = useState([
-    {
-      id: 1,
-      name: "Dhaka",
-    },
-    {
-      id: 2,
-      name: "Chittagong",
-    },
-    {
-      id: 3,
-      name: "Sylhet",
-    },
   ]);
 
   const [subdistrict, setSubdistrict] = useState([
-    {
-      id: 1,
-      district_id: 1,
-      name: "check",
-    },
-    {
-      id: 2,
-      district_id: 2,
-      name: "check2",
-    },
-    {
-        id: 3,
-        district_id: 3,
-        name: "check3",
-    }
   ]);
 
   const [currentSubdistrict, setCurrentSubdistrict] = useState([
@@ -131,41 +105,85 @@ export default function PersonaIInfo() {
     console.log("current ", currentSubdistrict);
 
   },[currentSubdistrict])
+  
 
  const handleOnChange =(e,props) => {
+    console.log(props.rowData)
     // console.log("check here ",e.target.name," pro ",props);
-  
-    if(e.targe.name === "district_id"){
-        const currentData = subdistrict.filter(item => item.district_id === e.target.value);
-        console.log("currentData ", currentData);
-        setCurrentSubdistrict(currentData);
-    }
-
     props.onChange(e.target.value);
+    // props.rowData.subdistrict_id =''
+
+    // if(e.target.name === "district_id"){
+    //     const currentData = subdistrict.filter(item => item.district_id === e.target.value);
+    //     console.log("currentData ", currentData);
+    //     props.rowData.subdistrict_id =''
+    //     setCurrentSubdistrict(currentData);
+    // }
+
+ 
     
 
 
  }
 
-  useEffect(async () => {
-    await fetch(baseUrl, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res.users);
+  useEffect(() => {
+    // await fetch(baseUrl, {
+    //   method: "GET",
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     "Content-Type": "application/json",
+    //     Accept: "application/json",
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     setData(res.users);
+    //   })
+    //   .catch((error) => {
+    //     // setFetcherror(error.message);
+    //     // const timer = setTimeout(() => {
+    //     //     setFetcherror();
+    //     // }, 2300);
+    //   });
+    const getData = async () => {
+    try {
+      const res = await axios
+      .get(baseUrl, {
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+          },
       })
-      .catch((error) => {
-        // setFetcherror(error.message);
-        // const timer = setTimeout(() => {
-        //     setFetcherror();
-        // }, 2300);
+      const res2 = await axios
+      .get(`http://amaderlab.xyz/api/utilities`, {
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+          },
+      })
+      console.log("res ", res);
+      if (res.status === 200) {
+        // setRows(rows.filter((row) => row.id !== id));
+        setData(res.data.users);
+      }
+      if(res2.status === 200){
+        setDistrict(res2.data.districts);
+        setSubdistrict(res2.data.subdistricts);
+        setCurrentSubdistrict(res2.data.subdistricts);
+        
+      }
+    } catch (e) {
+      // const { message: errorMessage } = errorHandler(e);
+      setNotify({
+        isOpen: true,
+        message: e.message,
+        type: "error",
       });
+    }
+
+  }
+
+  getData()
   }, [reload, baseUrl]);
 
   const columns = [
@@ -213,24 +231,34 @@ export default function PersonaIInfo() {
     },
     { title: "Name", field: "name", filtering: false },
     { title: "Email", field: "email", filtering: false },
-    { title: "Gender", field: "gender" },
+    { title: "Gender", field: "gender",filtering: false ,
+    lookup:{
+      Male:'Male',
+      Female:'Female',
+      Other:'Other'
+
+    }
+  
+  },
     { title: "Phone", field: "phone" },
     {
-      title: "Birth Date",
+      title: "BirthDate",
       field: "birthDate",
+    
       filtering: false,
       editComponent: (props) => (
         <input
           type="date"
           id="BirthDate"
           name="BirthDate"
+          
           onChange={(e) => props.onChange(e.target.value)}
         />
       ),
     },
     {
         title: "District",
-        field: "district",
+        field: "district_id",
         filtering: false,
         editComponent: (props) => (
             <Box sx={{ minWidth: 120 }}>
@@ -240,14 +268,14 @@ export default function PersonaIInfo() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="district_id"
-                // value={}
+                value={props.rowData.district_id || ''} 
                 label="District"
                 onChange={(e) => handleOnChange(e,props)}
                
               >
-                {district.map((district) => (
+                {district && district.map((district) => (
                     <MenuItem key={district.id} value={district.id}>
-                        {district.name}
+                        {district.district}
                     </MenuItem>
                 ))}
 
@@ -256,10 +284,19 @@ export default function PersonaIInfo() {
             </FormControl>
           </Box>
         ),
+        render: (rowData) => {
+          if (rowData.district_id) {
+            return (
+              <div>
+                {district && district.filter(item => item?.id === rowData?.district_id)[0]?.district}
+              </div>
+            );
+          } 
+        }
       },
       {
         title: "SubDistrict",
-        field: "subdistrict",
+        field: "subdistrict_id",
         filtering: false,
         editComponent: (props) => (
             <Box sx={{ minWidth: 120 }}>
@@ -269,24 +306,43 @@ export default function PersonaIInfo() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="subdistrict_id"
-                // value={}
+                value={props.rowData.subdistrict_id || ''}
                 label="Sub District"
                 onChange={(e) => handleOnChange(e,props)}
                
               >
-                {currentSubdistrict && currentSubdistrict.map((subdistrict) => (
+                {currentSubdistrict && currentSubdistrict.filter(item => item.district_id === props.rowData.district_id).map((subdistrict) => (
                     <MenuItem key={subdistrict.id} value={subdistrict.id}>
-                        {subdistrict.name}
-                    </MenuItem>
+                        {subdistrict.subdistrict}
+                    </MenuItem> 
                 ))}
+                
 
                
               </Select>
             </FormControl>
           </Box>
         ),
+        render: (rowData) => {
+          if (rowData.subdistrict_id) {
+            return (
+              <div>
+                {subdistrict && subdistrict.filter(item => item?.id === rowData?.subdistrict_id)[0]?.subdistrict}
+              </div>
+            );
+          } 
+        }
       },
     { title: "Area", field: "area", filtering: false },
+    {
+      title: "Status",
+      field: "status",
+      lookup: {
+        Verified: "Verified",
+        Unverified: "Unverified",
+      },
+     
+    },
     {
       title: "Role",
       field: "role",
@@ -294,10 +350,8 @@ export default function PersonaIInfo() {
         Painter: "Painter",
         Dealer: "Dealer",
         Admin: "Admin",
-        PainterPending: "Painter(Pending)",
-        DealerPending: "Dealer(Pending)",
-        AdminPending: "Admin(Pending)",
       },
+      filtering: false,
       render: (rowData) => {
         if (rowData.role === "Painter")
           return (
@@ -320,7 +374,7 @@ export default function PersonaIInfo() {
       },
     },
     {
-      title: "More Info",
+      title: "MoreInfo",
       editComponent: (props) => (
         <input
           // accept="image/*"
@@ -336,7 +390,7 @@ export default function PersonaIInfo() {
           <NavLink
             style={{ cursor: "pointer" }}
             to={{
-              pathname: `/home/moreinfo/${rowData.id}/Eptools`,
+              pathname: `/home/moreinfo/${rowData.id}/BuisnessInfo`,
               state: { role: rowData.role },
             }}
           >
@@ -424,7 +478,7 @@ export default function PersonaIInfo() {
 
         // }}
         options={{
-          actionsColumnIndex: 10,
+          actionsColumnIndex: 12,
           addRowPosition: "first",
           padding: "dense",
           filtering: true,
@@ -433,6 +487,7 @@ export default function PersonaIInfo() {
             fontWeight: 600,
             fontSize: "14px",
             color: "#313F5E",
+            maxWidth: "300px",
           },
           headerStyle: {
             backgroundColor:"#F4F4FB",
@@ -441,10 +496,6 @@ export default function PersonaIInfo() {
             fontSize: "14px",
             lineHeight: "13px",
             padding: "20px",
-            maxWidth: "100%",
-            lineWidth: "90px",
-            width:'90px',
-            borderRadius: "5px",
           },
 
           searchFieldStyle: {

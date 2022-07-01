@@ -124,27 +124,30 @@ const MoreInfo = props => {
     });
 
     const tabNameToIndex = {
-        0: "Eptools",
-        1: "Certificates",
-        2: "Insurances",
-        3: "Galleries",
-        4: "SubUser",
-        5: "LinkedUser",
+        0:"BuisnessInfo",
+        1: "Eptools",
+        2: "Certificates",
+        3: "Insurances",
+        4: "Galleries",
+        5: "SubUser",
+        6: "LinkedUser",
     };
 
     const indexToTabName = {
-        Eptools: 0,
-        Certificates: 1,
-        Insurances: 2,
-        Galleries: 3,
-        SubUser:4,
-        LinkedUser:5,
+        BuisnessInfo: 0,
+        Eptools: 1,
+        Certificates: 2,
+        Insurances: 3,
+        Galleries: 4,
+        SubUser:5,
+        LinkedUser:6,
     };
 
     const [selectedTab, setSelectedTab] = React.useState(indexToTabName[type]);
 
 
     useEffect(()=>{
+        console.log("firest type ",type)
       setSelectedTab(indexToTabName[type])
     },[type])
 
@@ -168,6 +171,7 @@ const MoreInfo = props => {
 
                 <Paper elevation={2} >
                     <AntTabs variant="scrollable" value={selectedTab} onChange={handleChange}>
+                        <AntTab label="Buisness Info" />
                         <AntTab label="Eptools" />
                         <AntTab label="Certificates" />
                         <AntTab label="Insurances" />
@@ -175,12 +179,13 @@ const MoreInfo = props => {
                         <AntTab label={subuser}/>
                         <AntTab label={linkeduser} />
                     </AntTabs>
-                    {selectedTab === 0 && <Eptool userId={userId} />}
-                    {selectedTab === 1 && <Certificate userId={userId} />}
-                    {selectedTab === 2 && <Insurance userId={userId} />}
-                    {selectedTab === 3 && <Gallery userId={userId} />}
-                    {selectedTab === 4 && <Subuser userId={userId} />}
-                    {selectedTab === 5 && <Linkeduser userId={userId}/>}
+                    {selectedTab === 0 && <BuisnessInfo id={id} />}
+                    {selectedTab === 1 && <Eptool userId={userId} />}
+                    {selectedTab === 2 && <Certificate userId={userId} />}
+                    {selectedTab === 3 && <Insurance userId={userId} />}
+                    {selectedTab === 4 && <Gallery userId={userId} />}
+                    {selectedTab === 5 && <Subuser userId={userId} />}
+                    {selectedTab === 6 && <Linkeduser userId={userId}/>}
                 </Paper>
 
             </Box>

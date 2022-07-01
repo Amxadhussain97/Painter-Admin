@@ -133,15 +133,15 @@ const Info = props => {
             <SideNav position="fixed" mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
 
             <Box className={classes.wrapper}>
-
-                <Paper elevation={2} >
+            <PersonaIInfo />
+                {/* <Paper elevation={2} >
                     <AntTabs value={selectedTab} onChange={handleChange}>
                         <AntTab label="Personal Info" />
                         <AntTab label="Buisness Info" />
                     </AntTabs>
                     {selectedTab === 0 && <PersonaIInfo />}
                     {selectedTab === 1 && <BuisnessInfo />}
-                </Paper>
+                </Paper> */}
 
             </Box>
         </>
